@@ -391,7 +391,7 @@ type checkConfiguration struct {
 	NotifyWhenBackUp bool `url:",omitempty"`
 
 	// Tags for the check.
-	Tags []string `url:",omitempty"`
+	Tags []string `url:",omitempty,comma"`
 
 	// Use IPv6 instead of IPv4.
 	//
@@ -429,8 +429,9 @@ type checkConfigurationHTTP struct {
 	// way as a web browser would send it to the web server.
 	PostData string `url:",omitempty"`
 
-	// Custom headers to send with the HTTP request.
-	RequestHeaders map[string]string `url:",omitempty"`
+	// Custom headers to send with the HTTP request. Required in name: value
+	// pairs.
+	RequestHeaders []string `url:"requestheader,numbered,omitempty"`
 }
 
 // checkConfigurationHTTPCustom - Configuration for the Custom HTTP check type.
@@ -451,7 +452,7 @@ type checkConfigurationHTTPCustom struct {
 	Auth string `url:",omitempty"`
 
 	// Additional URLs to target.
-	AdditionalURLs []string `url:",omitempty"`
+	AdditionalURLs []string `url:",semicolon,omitempty"`
 }
 
 // checkConfigurationTCP - Configuration for the TCP check type.
