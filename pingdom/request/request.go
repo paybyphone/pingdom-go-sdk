@@ -11,16 +11,22 @@ import (
 	"github.com/paybyphone/pingdom-go-sdk/pingdom"
 )
 
-// ErrorResponse - structure of a Pingdom JSON error response
-type ErrorResponse struct {
+// errorResponseErrorType is the actual error object within
+// an Error Response.
+type errorResponseErrorType struct {
 	// The status code.
-	StatusCode int `json:"statuscode"`
+	StatusCode int
 
 	// The status description.
-	StatusDesc string `json:"statusdesc"`
+	StatusDesc string
 
 	// The error message.
-	ErrorMessage string `json:"errormessage"`
+	ErrorMessage string
+}
+
+// ErrorResponse - structure of a Pingdom JSON error response
+type ErrorResponse struct {
+	Error errorResponseErrorType
 }
 
 // Request - the API request.
@@ -114,7 +120,7 @@ func (r *Request) Send() error {
 		req, err = http.NewRequest(r.Method, fmt.Sprintf("%s%s", r.Config.Endpoint, r.URI), &buf)
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	default:
-		panic(fmt.Errorf("API request method %s not supported by Pingdom", r.Method))
+		return fmt.Errorf("API request method %s not supported by Pingdom", r.Method)
 	}
 
 	if err != nil {
@@ -149,13 +155,8 @@ func (r *Request) Send() error {
 	return nil
 }
 
-// handleError - handles a Pingdom API error response.
+//Error. handleError - handles a Pingdom API error response.
 func handleError(r *requestResponse) error {
-	// error for redirect errors get a simple message
-	if r.StatusCode >= 300 && r.StatusCode < 400 {
-		return fmt.Errorf("%s", r.Status)
-	}
-
 	er := ErrorResponse{}
 	err := r.ReadResponseJSON(&er)
 	if err != nil {
@@ -165,7 +166,7 @@ func handleError(r *requestResponse) error {
 	}
 
 	// Return a properly formatted error from the appropraite fields.
-	return fmt.Errorf("%s (%d): %s", er.StatusDesc, r.StatusCode, er.ErrorMessage)
+	return fmt.Errorf("%s (%d): %s", er.Error.StatusDesc, r.StatusCode, er.Error.ErrorMessage)
 }
 
 // NewRequest - Create a new request instance with configuration set.
