@@ -14,13 +14,13 @@ import (
 // ErrorResponse - structure of a Pingdom JSON error response
 type ErrorResponse struct {
 	// The status code.
-	StatusCode int
+	StatusCode int `json:"statuscode"`
 
 	// The status description.
-	StatusDesc string
+	StatusDesc string `json:"statusdesc"`
 
 	// The error message.
-	ErrorMessage string
+	ErrorMessage string `json:"errormessage"`
 }
 
 // Request - the API request.

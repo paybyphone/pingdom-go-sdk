@@ -46,6 +46,10 @@ func okResponse() okResponseType {
 	}
 }
 
+func errorResponse() string {
+	return "Forbidden (403): Something went wrong! This string describes what happened."
+}
+
 type queryStringDataTestBasicType struct {
 	ID   int    `url:"id"`
 	Name string `url:"name"`
@@ -166,5 +170,26 @@ func TestRequestSendSuccess(t *testing.T) {
 
 	if reflect.DeepEqual(expected, out) == false {
 		t.Fatalf("expected %v, got %v", expected, out)
+	}
+}
+
+func TestRequestSendError(t *testing.T) {
+	ts := httpErrorTestServer()
+	defer ts.Close()
+	cfg := pingdomConfig()
+	cfg.Endpoint = ts.URL
+	in := queryStringDataTestBasic()
+	out := okResponseType{}
+	r := testRequest(cfg, &in, &out)
+	err := r.Send()
+
+	if err == nil {
+		t.Fatalf("Expected error, got success")
+	}
+
+	expected := errorResponse()
+
+	if err.Error() != expected {
+		t.Fatalf("expected %s, got %s", expected, err)
 	}
 }
