@@ -155,7 +155,7 @@ func (r *Request) Send() error {
 	return nil
 }
 
-//Error. handleError - handles a Pingdom API error response.
+// handleError - handles a Pingdom API error response.
 func handleError(r *requestResponse) error {
 	er := ErrorResponse{}
 	err := r.ReadResponseJSON(&er)
