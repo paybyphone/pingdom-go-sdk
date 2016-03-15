@@ -1,5 +1,16 @@
 package check
 
+import (
+	"fmt"
+
+	"github.com/paybyphone/pingdom-go-sdk/pingdom/client"
+)
+
+// Check is the base client for check-related methods.
+type Check struct {
+	client.Client
+}
+
 // checkListEntryTags - unexported type for a check list entry's tags.
 type checkListEntryTags struct {
 	_ struct{}
@@ -81,7 +92,13 @@ type GetCheckListOutput struct {
 	Checks []checkListEntry
 }
 
-// GetDetailedCheckOutputHTTP - Output for the HTTP check type,
+// GetCheckList gets a list of available checks based on a specific set of filters.
+func (c *Check) GetCheckList(in GetCheckListInput) (out GetCheckListOutput, err error) {
+	err = c.SendRequest("GET", "/api/2.0/checks", &in, &out)
+	return
+}
+
+// detailedCheckEntryHTTP - Output for the HTTP check type,
 // detailed check method.
 type detailedCheckEntryHTTP struct {
 	_ struct{}
@@ -116,7 +133,7 @@ type detailedCheckEntryHTTP struct {
 	RequestHeaders map[string]string
 }
 
-// GetDetailedCheckOutputHTTPCustom - Output for the Custom HTTP check type,
+// detailedCheckEntryHTTPCustom - Output for the Custom HTTP check type,
 // detailed check method.
 type detailedCheckEntryHTTPCustom struct {
 	_ struct{}
@@ -140,7 +157,7 @@ type detailedCheckEntryHTTPCustom struct {
 	AdditionalURLs []string
 }
 
-// GetDetailedCheckOutputTCP - Output for the TCP check type,
+// detailedCheckEntryTCP - Output for the TCP check type,
 // detailed check method.
 type detailedCheckEntryTCP struct {
 	_ struct{}
@@ -155,13 +172,13 @@ type detailedCheckEntryTCP struct {
 	StringToExpect string
 }
 
-// GetDetailedCheckOutputPing - Output for the Ping check type,
+// detailedCheckEntryPing - Output for the Ping check type,
 // detailed check method.
 type detailedCheckEntryPing struct {
 	_ struct{}
 }
 
-// GetDetailedCheckOutputDNS - Output for the DNS check type,
+// detailedCheckEntryDNS - Output for the DNS check type,
 // detailed check method.
 type detailedCheckEntryDNS struct {
 	_ struct{}
@@ -173,7 +190,7 @@ type detailedCheckEntryDNS struct {
 	ExpectedIP string
 }
 
-// GetDetailedCheckOutputUDP - Output for the UDP check type,
+// detailedCheckEntryUDP - Output for the UDP check type,
 // detailed check method.
 type detailedCheckEntryUDP struct {
 	_ struct{}
@@ -188,7 +205,7 @@ type detailedCheckEntryUDP struct {
 	StringToExpect string
 }
 
-// GetDetailedCheckOutputSMTP - Output for the SMTP check type,
+// detailedCheckEntrySMTP - Output for the SMTP check type,
 // detailed check method.
 type detailedCheckEntrySMTP struct {
 	_ struct{}
@@ -209,7 +226,7 @@ type detailedCheckEntrySMTP struct {
 	StringToExpect string
 }
 
-// GetDetailedCheckOutputPOP3 - Output for the POP3 check type,
+// detailedCheckEntryPOP3 - Output for the POP3 check type,
 // detailed check method.
 type detailedCheckEntryPOP3 struct {
 	_ struct{}
@@ -224,7 +241,7 @@ type detailedCheckEntryPOP3 struct {
 	StringToExpect string
 }
 
-// GetDetailedCheckOutputIMAP - Output for the IMAP check type,
+// detailedCheckEntryIMAP - Output for the IMAP check type,
 // detailed check method.
 type detailedCheckEntryIMAP struct {
 	_ struct{}
@@ -331,6 +348,12 @@ type GetDetailedCheckOutput struct {
 
 	// The detailed check entry.
 	Check detailedCheckEntry
+}
+
+// GetDetailedCheck gets detailed information about a single check.
+func (c *Check) GetDetailedCheck(in GetDetailedCheckInput) (out GetDetailedCheckOutput, err error) {
+	err = c.SendRequest("GET", fmt.Sprintf("/api/2.0/checks/%d", in.CheckID), nil, &out)
+	return
 }
 
 // checkConfiguration - Structure for the create and modify
@@ -573,6 +596,12 @@ type CreateCheckOutput struct {
 	CheckName string
 }
 
+// CreateCheck gets a list of available checks based on a specific set of filters.
+func (c *Check) CreateCheck(in GetCheckListInput) (out GetCheckListOutput, err error) {
+	err = c.SendRequest("POST", "/api/2.0/checks", &in, &out)
+	return
+}
+
 // ModifyCheckInput - Input for the CreateCheck function.
 // Embeds checkConfiguration structs.
 type ModifyCheckInput struct {
@@ -596,4 +625,32 @@ type ModifyCheckOutput struct {
 
 	// The success message.
 	Message string
+}
+
+// ModifyCheck gets a list of available checks based on a specific set of filters.
+func (c *Check) ModifyCheck(in GetCheckListInput) (out GetCheckListOutput, err error) {
+	err = c.SendRequest("POST", "/api/2.0/checks", &in, &out)
+	return
+}
+
+// DeleteCheckInput - Input to send to the detailed check method.
+type DeleteCheckInput struct {
+	_ struct{}
+
+	// The ID of the check that you want to get a description for.
+	CheckID int
+}
+
+// DeleteCheckOutput - Output for the detailed check method.
+type DeleteCheckOutput struct {
+	_ struct{}
+
+	// The detailed check entry.
+	Message string
+}
+
+// DeleteCheck gets detailed information about a single check.
+func (c *Check) DeleteCheck(in GetDetailedCheckInput) (out GetDetailedCheckOutput, err error) {
+	err = c.SendRequest("DELETE", fmt.Sprintf("/api/2.0/checks/%d", in.CheckID), nil, &out)
+	return
 }

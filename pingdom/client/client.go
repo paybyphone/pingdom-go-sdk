@@ -2,6 +2,7 @@ package client
 
 import (
 	"github.com/paybyphone/pingdom-go-sdk/pingdom"
+	"github.com/paybyphone/pingdom-go-sdk/pingdom/request"
 	"github.com/paybyphone/pingdom-go-sdk/util"
 )
 
@@ -22,4 +23,20 @@ func New(config pingdom.Config) *Client {
 	util.SimpleCopyStruct(config, c.Config)
 
 	return c
+}
+
+// SendRequest sends a request to a request.Request object.
+// It's expected that references to specific data types are passed - no
+// checking is done to make sure that references are passed.
+func (c *Client) SendRequest(method, uri string, in, out interface{}) error {
+	r := request.NewRequest(c.Config)
+	r.Method = method
+	r.URI = uri
+	r.Input = in
+	r.Output = out
+	err := r.Send()
+	if err != nil {
+		return err
+	}
+	return nil
 }
