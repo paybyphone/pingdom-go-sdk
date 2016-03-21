@@ -1,12 +1,12 @@
 package client
 
 import (
+	"github.com/imdario/mergo"
 	"github.com/paybyphone/pingdom-go-sdk/pingdom"
 	"github.com/paybyphone/pingdom-go-sdk/pingdom/request"
-	"github.com/paybyphone/pingdom-go-sdk/util"
 )
 
-// Client encompasses a generic client object that is further extended by\
+// Client encompasses a generic client object that is further extended by
 // services. Any common configuration and functionality goes here.
 type Client struct {
 	// The configuration for this specific connection.
@@ -19,8 +19,7 @@ func New(config pingdom.Config) *Client {
 	c := &Client{
 		Config: pingdom.DefaultConfigProvider(),
 	}
-	// Merge config objects.
-	util.SimpleCopyStruct(config, c.Config)
+	mergo.MergeWithOverwrite(&c.Config, config)
 
 	return c
 }
