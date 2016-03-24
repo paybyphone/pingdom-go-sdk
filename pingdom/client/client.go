@@ -15,12 +15,13 @@ type Client struct {
 
 // New handles logic for either setting a conneciton based on supplied
 // configuration, or getting the configuration from a specific provider.
-func New(config pingdom.Config) *Client {
+func New(configs ...pingdom.Config) *Client {
 	c := &Client{
 		Config: pingdom.DefaultConfigProvider(),
 	}
-	mergo.MergeWithOverwrite(&c.Config, config)
-
+	for _, v := range configs {
+		mergo.MergeWithOverwrite(&c.Config, v)
+	}
 	return c
 }
 

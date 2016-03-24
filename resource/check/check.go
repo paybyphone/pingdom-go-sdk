@@ -3,12 +3,21 @@ package check
 import (
 	"fmt"
 
+	"github.com/paybyphone/pingdom-go-sdk/pingdom"
 	"github.com/paybyphone/pingdom-go-sdk/pingdom/client"
 )
 
 // Check is the base client for check-related methods.
 type Check struct {
 	client.Client
+}
+
+// New returns a new instance of the Check API.
+func New(configs ...pingdom.Config) *Check {
+	c := &Check{
+		Client: *client.New(configs...),
+	}
+	return c
 }
 
 // checkListEntryTags - unexported type for a check list entry's tags.
@@ -42,7 +51,7 @@ type checkListEntry struct {
 	LastErrorTime int
 
 	// Timestamp of last test (if any). Format is UNIX timestamp
-	LatestTime int
+	LastTestTime int
 
 	// Response time (in milliseconds) of last test.
 	LastResponseTime int
