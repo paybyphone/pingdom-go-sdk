@@ -81,16 +81,16 @@ type GetCheckListInput struct {
 
 	// Limits the number of returned probes to the specified quantity.
 	// Max value is 25000.
-	Limit int
+	Limit int `url:"limit,omitempty"`
 
 	// Offset for the check listing. Requires Limit.
-	Offset int
+	Offset int `url:"offset,omitempty"`
 
 	// Include tag list for each check.
-	IncludeTags bool `json:"include_tags"`
+	IncludeTags bool `url:"include_tags,omitempty"`
 
 	// A tag list to search on.
-	Tags []string
+	Tags []string `url:"tags,omitempty,comma"`
 }
 
 // GetCheckListOutput - Output for the GetCheckList function.
@@ -265,6 +265,20 @@ type detailedCheckEntryIMAP struct {
 	StringToExpect string
 }
 
+type detailedCheckEntryTypes struct {
+	_ struct{}
+
+	HTTP       detailedCheckEntryHTTP
+	HTTPCustom detailedCheckEntryHTTPCustom
+	TCP        detailedCheckEntryTCP
+	Ping       detailedCheckEntryPing
+	DNS        detailedCheckEntryDNS
+	UDP        detailedCheckEntryUDP
+	SMTP       detailedCheckEntrySMTP
+	POP3       detailedCheckEntryPOP3
+	IMAP       detailedCheckEntryIMAP
+}
+
 // detailedCheckEntry - Unexported entry for GetDetailedCheckOutput.
 type detailedCheckEntry struct {
 	_ struct{}
@@ -286,19 +300,7 @@ type detailedCheckEntry struct {
 
 	// Contains one element representing the type of check and
 	// type-specific settings.
-	Type struct {
-		_ struct{}
-
-		detailedCheckEntryHTTP
-		detailedCheckEntryHTTPCustom
-		detailedCheckEntryTCP
-		detailedCheckEntryPing
-		detailedCheckEntryDNS
-		detailedCheckEntryUDP
-		detailedCheckEntrySMTP
-		detailedCheckEntryPOP3
-		detailedCheckEntryIMAP
-	}
+	Type detailedCheckEntryTypes
 
 	// A list of contact IDs that receive alerts.
 	ContactIds []int
@@ -331,7 +333,7 @@ type detailedCheckEntry struct {
 	LastErrorTime int
 
 	// Timestamp of last test (if any). Format is UNIX timestamp
-	LatestTime int
+	LastTestTime int
 
 	// Response time (in milliseconds) of last test.
 	LastResponseTime int
@@ -371,10 +373,10 @@ type checkConfiguration struct {
 	_ struct{}
 
 	// The name of the check.
-	Name string `url:",omitempty"`
+	Name string `url:"name,omitempty"`
 
 	// The target hostname or IP address.
-	Host string `url:",omitempty"`
+	Host string `url:"host,omitempty"`
 
 	// The type of check. One of:
 	//  * http (HTTP check)
@@ -386,50 +388,50 @@ type checkConfiguration struct {
 	//  * smtp (SMTP check)
 	//  * pop3 (POP3 check)
 	//  * imap (IMAP check)
-	Type string `url:",omitempty"`
+	Type string `url:"type,omitempty"`
 
 	// Pause the check upon creation.
-	Paused string `url:",omitempty"`
+	Paused bool `url:"paused,omitempty"`
 
 	// The resolution of the check. Can be one of
 	// 1, 5, 15, 30, or 60.
-	Resolution int `url:",omitempty"`
+	Resolution int `url:"resolution,omitempty"`
 
 	// An array of contact IDs.
-	ContactIDs []int `url:",omitempty"`
+	ContactIDs []int `url:"contactids,comma,omitempty"`
 
 	// Send alerts as email.
-	SendToEmail bool `url:",omitempty"`
+	SendToEmail bool `url:"sendtoemail,omitempty"`
 
 	// Send alerts as SMS.
-	SendToSMS bool `url:",omitempty"`
+	SendToSMS bool `url:"sendtosms,omitempty"`
 
 	// Send alerts through Twitter.
-	SendToTwitter bool `url:",omitempty"`
+	SendToTwitter bool `url:"sendtotwitter,omitempty"`
 
 	// Send alerts to iPhone.
-	SendToIphone bool `url:",omitempty"`
+	SendToIphone bool `url:"sendtoiphone,omitempty"`
 
 	// Send alerts to Android.
-	SendToAndroid bool `url:",omitempty"`
+	SendToAndroid bool `url:"sendtoandroid,omitempty"`
 
 	// The failure count threshold to send notifications on.
-	SendNotificationWhenDown int `url:",omitempty"`
+	SendNotificationWhenDown int `url:"sendnotificationwhendown,omitempty"`
 
 	// The check frequency to notify on after a service has failed.
-	NotifyAgainEvery int `url:",omitempty"`
+	NotifyAgainEvery int `url:"notifyagainevery,omitempty"`
 
 	// Send a notification after a failed check resolves itself.
-	NotifyWhenBackUp bool `url:",omitempty"`
+	NotifyWhenBackUp bool `url:"notifywhenbackup,omitempty"`
 
 	// Tags for the check.
-	Tags []string `url:",omitempty,comma"`
+	Tags []string `url:"tags,omitempty,comma"`
 
 	// Use IPv6 instead of IPv4.
 	//
 	// If an IP address is provided as a host, this setting will be
 	// overridden by the version of the IP address provided.
-	IPv6 bool `url:",omitempty"`
+	IPv6 bool `url:"ipv6,omitempty"`
 }
 
 // checkConfigurationHTTP - Configuration for the HTTP check type.
@@ -437,29 +439,29 @@ type checkConfigurationHTTP struct {
 	_ struct{}
 
 	// Path to the target on the server.
-	URL string `url:",omitempty"`
+	URL string `url:"url,omitempty"`
 
 	// true if the connection to the server is encrypted.
-	Encryption bool `url:",omitempty"`
+	Encryption bool `url:"encryption,omitempty"`
 
 	// Target port to connect to on the server.
-	Port int `url:",omitempty"`
+	Port int `url:"port,omitempty"`
 
 	// Username and password for target HTTP authentication.
 	// Example: user:password
-	Auth string `url:",omitempty"`
+	Auth string `url:"auth,omitempty"`
 
 	// A string the target response should contain.
-	ShouldContain string `url:",omitempty"`
+	ShouldContain string `url:"shouldcontain,omitempty"`
 
 	// A string the target response should not contain.
 	// If ShouldContain is also set, this parameter is not allowed.
-	ShouldNotContain string `url:",omitempty"`
+	ShouldNotContain string `url:"shouldnotcontain,omitempty"`
 
 	// Data that should be posted to the web page, for example submission data
 	// for a sign-up or login form. The data needs to be formatted in the same
 	// way as a web browser would send it to the web server.
-	PostData string `url:",omitempty"`
+	PostData string `url:"postdata,omitempty"`
 
 	// Custom headers to send with the HTTP request. Required in name: value
 	// pairs.
@@ -470,21 +472,21 @@ type checkConfigurationHTTP struct {
 type checkConfigurationHTTPCustom struct {
 	_ struct{}
 
-	// Path to the target XML file on the server.
-	URL string `url:",omitempty"`
+	// Path to the target on the server.
+	URL string `url:"url,omitempty"`
 
 	// true if the connection to the server is encrypted.
-	Encryption bool `url:",omitempty"`
+	Encryption bool `url:"encryption,omitempty"`
 
 	// Target port to connect to on the server.
-	Port int `url:",omitempty"`
+	Port int `url:"port,omitempty"`
 
 	// Username and password for target HTTP authentication.
 	// Example: user:password
-	Auth string `url:",omitempty"`
+	Auth string `url:"auth,omitempty"`
 
 	// Additional URLs to target.
-	AdditionalURLs []string `url:",semicolon,omitempty"`
+	AdditionalURLs []string `url:"additionalurls,semicolon,omitempty"`
 }
 
 // checkConfigurationTCP - Configuration for the TCP check type.
@@ -492,13 +494,13 @@ type checkConfigurationTCP struct {
 	_ struct{}
 
 	// Path to the target XML file on the server.
-	Port int `url:",omitempty"`
+	Port int `url:"port,omitempty"`
 
 	// String to send to the server.
-	StringToSend string `url:",omitempty"`
+	StringToSend string `url:"stringtosend,omitempty"`
 
 	// String to expect in response.
-	StringToExpect string `url:",omitempty"`
+	StringToExpect string `url:"stringtoexpect,omitempty"`
 }
 
 // checkConfigurationPing - Configuration for the Ping check type.
@@ -511,10 +513,10 @@ type checkConfigurationDNS struct {
 	_ struct{}
 
 	// DNS server to use.
-	DNSServer string `url:",omitempty"`
+	NameServer string `url:"nameserver,omitempty"`
 
 	// Expected IP address from the query.
-	ExpectedIP string `url:",omitempty"`
+	ExpectedIP string `url:"expectedip,omitempty"`
 }
 
 // checkConfigurationUDP - Configuration for the UDP check type.
@@ -522,13 +524,13 @@ type checkConfigurationUDP struct {
 	_ struct{}
 
 	// The target port to check.
-	Port int `url:",omitempty"`
+	Port int `url:"port,omitempty"`
 
 	// String to send.
-	StringToSend string `url:",omitempty"`
+	StringToSend string `url:"stringtosend,omitempty"`
 
 	// String to expect in response.
-	StringToExpect string `url:",omitempty"`
+	StringToExpect string `url:"stringtoexpect,omitempty"`
 }
 
 // checkConfigurationSMTP - Configuration for the SMTP check type.
@@ -536,17 +538,17 @@ type checkConfigurationSMTP struct {
 	_ struct{}
 
 	// The target port to check.
-	Port int `url:",omitempty"`
+	Port int `url:"port,omitempty"`
 
 	// Username and password for target SMTP authentication.
 	// Example: user:password
-	Auth string `url:",omitempty"`
+	Auth string `url:"auth,omitempty"`
 
 	// Enable STARTTLS on the SMTP connection.
-	Encryption bool `url:",omitempty"`
+	Encryption bool `url:"encryption,omitempty"`
 
 	// String to expect in response.
-	StringToExpect string `url:",omitempty"`
+	StringToExpect string `url:"stringtoexpect,omitempty"`
 }
 
 // checkConfigurationPOP3 - Configuration for the POP3 check type.
@@ -554,13 +556,13 @@ type checkConfigurationPOP3 struct {
 	_ struct{}
 
 	// The target port to check.
-	Port int `url:",omitempty"`
+	Port int `url:"port,omitempty"`
 
-	// Enable encryption on the POP3 connection.
-	Encryption bool `url:",omitempty"`
+	// Enable STARTTLS on the SMTP connection.
+	Encryption bool `url:"encryption,omitempty"`
 
 	// String to expect in response.
-	StringToExpect string `url:",omitempty"`
+	StringToExpect string `url:"stringtoexpect,omitempty"`
 }
 
 // checkConfigurationIMAP - Configuration for the IMAP check type.
@@ -568,13 +570,13 @@ type checkConfigurationIMAP struct {
 	_ struct{}
 
 	// The target port to check.
-	Port int `url:",omitempty"`
+	Port int `url:"port,omitempty"`
 
-	// Enable encryption on the IMAP connection.
-	Encryption bool `url:",omitempty"`
+	// Enable STARTTLS on the SMTP connection.
+	Encryption bool `url:"encryption,omitempty"`
 
 	// String to expect in response.
-	StringToExpect string `url:",omitempty"`
+	StringToExpect string `url:"stringtoexpect,omitempty"`
 }
 
 // CreateCheckInput - Input for the CreateCheck function.
