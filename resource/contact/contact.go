@@ -178,7 +178,7 @@ type ModifyContactOutput struct {
 
 // ModifyContact modifies an existing contact.
 func (c *Contact) ModifyContact(in ModifyContactInput) (out ModifyContactOutput, err error) {
-	err = c.SendRequest("POST", fmt.Sprintf("/api/2.0/contacts/%d", in.ContactID), &in, &out)
+	err = c.SendRequest("PUT", fmt.Sprintf("/api/2.0/contacts/%d", in.ContactID), &in, &out)
 	return
 }
 
