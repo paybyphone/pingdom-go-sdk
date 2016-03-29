@@ -615,16 +615,19 @@ type createCheckEntry struct {
 	Name string
 }
 
-// CreateCheck gets a list of available checks based on a specific set of filters.
+// CreateCheck creates a Pingdom service check.
 func (c *Check) CreateCheck(in CreateCheckInput) (out CreateCheckOutput, err error) {
 	err = c.SendRequest("POST", "/api/2.0/checks", &in, &out)
 	return
 }
 
-// ModifyCheckInput - Input for the CreateCheck function.
+// ModifyCheckInput - Input for the ModifyCheck function.
 // Embeds checkConfiguration structs.
 type ModifyCheckInput struct {
 	_ struct{}
+
+	// The ID of the check to modify.
+	CheckID int `url:"-"`
 
 	checkConfiguration
 	checkConfigurationHTTP
@@ -646,29 +649,33 @@ type ModifyCheckOutput struct {
 	Message string
 }
 
-// ModifyCheck gets a list of available checks based on a specific set of filters.
+// ModifyCheck modifies an existing check.
+//
+// The provided settings will overwrite previous values. To clear an existing
+// value, provide an empty value. Note that you cannot change the type of a
+// check once it's created.
 func (c *Check) ModifyCheck(in ModifyCheckInput) (out ModifyCheckOutput, err error) {
-	err = c.SendRequest("POST", "/api/2.0/checks", &in, &out)
+	err = c.SendRequest("PUT", fmt.Sprintf("/api/2.0/checks/%d", in.CheckID), &in, &out)
 	return
 }
 
-// DeleteCheckInput - Input to send to the detailed check method.
+// DeleteCheckInput - Input to send to the DeleteCheck method.
 type DeleteCheckInput struct {
 	_ struct{}
 
-	// The ID of the check that you want to get a description for.
+	// The ID of the check that you want to delete.
 	CheckID int
 }
 
-// DeleteCheckOutput - Output for the detailed check method.
+// DeleteCheckOutput - Output for the DeleteCheck method.
 type DeleteCheckOutput struct {
 	_ struct{}
 
-	// The detailed check entry.
+	// The success message.
 	Message string
 }
 
-// DeleteCheck gets detailed information about a single check.
+// DeleteCheck deletes a check from Pingdom.
 func (c *Check) DeleteCheck(in DeleteCheckInput) (out DeleteCheckOutput, err error) {
 	err = c.SendRequest("DELETE", fmt.Sprintf("/api/2.0/checks/%d", in.CheckID), nil, &out)
 	return
