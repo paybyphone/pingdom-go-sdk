@@ -232,7 +232,7 @@ func getDetailedCheckOutputData() GetDetailedCheckOutput {
 	}
 }
 
-const GetDetailedCheckOutputText = `
+const getDetailedCheckOutputText = `
 {
 	"check": {
 		"id": 85975,
@@ -267,7 +267,7 @@ const GetDetailedCheckOutputText = `
 func httpGetDetailedCheckTestServer() *httptest.Server {
 	return newHTTPTestServer(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "application/json")
-		http.Error(w, GetDetailedCheckOutputText, http.StatusOK)
+		http.Error(w, getDetailedCheckOutputText, http.StatusOK)
 	})
 }
 
@@ -291,8 +291,6 @@ func checkConfigurationData() checkConfiguration {
 	}
 }
 
-const checkConfigurationText = "auth=My+check&contactids=1234%2C5678&encryption=true&host=&ipv6=&name=&notifyagainevery=&notifywhenbackup=&paused=&port=&postdata=&requestheaders=&resolution=&sendnotificationwhendown=&sendtoandroid=&sendtoemail=&sendtoiphone=&sendtosms=&sendtotwitter=&shouldcontain=&shouldnotcontain=&tags=&url=&"
-
 func checkConfigurationHTTPData() checkConfigurationHTTP {
 	return checkConfigurationHTTP{
 		URL:              "example.com",
@@ -315,6 +313,8 @@ func createCheckInputHTTPData() CreateCheckInput {
 	return c
 }
 
+const checkConfigurationHTTPText = "auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=443&postdata=baz&requestheader0=X-Header1%3Afoo&requestheader1=X-Header2%3Abar&requestheader2=X-Header3%3Abaz&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&shouldcontain=foo&shouldnotcontain=bar&tags=foo%2Cbar&type=http&url=example.com"
+
 func checkConfigurationHTTPCustomData() checkConfigurationHTTPCustom {
 	return checkConfigurationHTTPCustom{
 		URL:            "example.com",
@@ -334,6 +334,8 @@ func createCheckInputHTTPCustomData() CreateCheckInput {
 	return c
 }
 
+const checkConfigurationHTTPCustomText = "additionalurls=mysite.com%3Bmyothersite.com&auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=443&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=httpcustom&url=example.com"
+
 func checkConfigurationTCPData() checkConfigurationTCP {
 	return checkConfigurationTCP{
 		Port:           22,
@@ -351,6 +353,8 @@ func createCheckInputTCPData() CreateCheckInput {
 	return c
 }
 
+const checkConfigurationTCPText = "contactids=1234%2C5678&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=22&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=bar&stringtosend=foo&tags=foo%2Cbar&type=tcp"
+
 func checkConfigurationPingData() checkConfigurationPing {
 	return checkConfigurationPing{}
 }
@@ -363,6 +367,8 @@ func createCheckInputPingData() CreateCheckInput {
 	c.Type = "ping"
 	return c
 }
+
+const checkConfigurationPingText = "contactids=1234%2C5678&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=ping"
 
 func checkConfigurationDNSData() checkConfigurationDNS {
 	return checkConfigurationDNS{
@@ -380,6 +386,8 @@ func createCheckInputDNSData() CreateCheckInput {
 	return c
 }
 
+const checkConfigurationDNSText = "contactids=1234%2C5678&expectedip=127.0.0.1&host=example.com&name=My+check&nameserver=ns1.example.com&notifyagainevery=1&notifywhenbackup=true&paused=true&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=dns"
+
 func checkConfigurationUDPData() checkConfigurationUDP {
 	return checkConfigurationUDP{
 		Port:           53,
@@ -396,6 +404,8 @@ func createCheckInputUDPData() CreateCheckInput {
 	c.Type = "udp"
 	return c
 }
+
+const checkConfigurationUDPText = "contactids=1234%2C5678&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=53&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=bar&stringtosend=foo&tags=foo%2Cbar&type=udp"
 
 func checkConfigurationSMTPData() checkConfigurationSMTP {
 	return checkConfigurationSMTP{
@@ -415,6 +425,8 @@ func createCheckInputSMTPData() CreateCheckInput {
 	return c
 }
 
+const checkConfigurationSMTPText = "auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=587&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=foobar&tags=foo%2Cbar&type=smtp"
+
 func checkConfigurationPOP3Data() checkConfigurationPOP3 {
 	return checkConfigurationPOP3{
 		Port:           993,
@@ -432,6 +444,8 @@ func createCheckInputPOP3Data() CreateCheckInput {
 	return c
 }
 
+const checkConfigurationPOP3Text = "contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=993&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=foobar&tags=foo%2Cbar&type=pop3"
+
 func checkConfigurationIMAPData() checkConfigurationIMAP {
 	return checkConfigurationIMAP{
 		Port:           995,
@@ -447,6 +461,86 @@ func createCheckInputIMAPData() CreateCheckInput {
 	}
 	c.Type = "imap"
 	return c
+}
+
+const checkConfigurationIMAPText = "contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=995&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=foobar&tags=foo%2Cbar&type=imap"
+
+func createCheckOutputData() CreateCheckOutput {
+	return CreateCheckOutput{
+		Check: createCheckEntry{
+			ID:   138631,
+			Name: "My new HTTP check",
+		},
+	}
+}
+
+const createCheckOutputText = `
+{
+	"check": {
+		"id": 138631,
+		"name": "My new HTTP check"
+	}
+}
+`
+
+func httpCreateCheckTestServer() *httptest.Server {
+	return newHTTPTestServer(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Content-Type", "application/json")
+		http.Error(w, createCheckOutputText, http.StatusOK)
+	})
+}
+
+func modifyCheckInputHTTPData() ModifyCheckInput {
+	c := ModifyCheckInput{
+		checkConfiguration:     checkConfigurationData(),
+		checkConfigurationHTTP: checkConfigurationHTTPData(),
+	}
+	c.Type = "http"
+	return c
+}
+
+func modifyCheckOutputData() ModifyCheckOutput {
+	return ModifyCheckOutput{
+		Message: "Modification of check was successful!",
+	}
+}
+
+const modifyCheckOutputText = `
+{
+	"message": "Modification of check was successful!"
+}
+`
+
+func httpModifyCheckTestServer() *httptest.Server {
+	return newHTTPTestServer(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Content-Type", "application/json")
+		http.Error(w, modifyCheckOutputText, http.StatusOK)
+	})
+}
+
+func deleteCheckInputData() DeleteCheckInput {
+	return DeleteCheckInput{
+		CheckID: 134536,
+	}
+}
+
+func deleteCheckOutputData() DeleteCheckOutput {
+	return DeleteCheckOutput{
+		Message: "Deletion of check was successful!",
+	}
+}
+
+const deleteCheckOutputText = `
+{
+	"message": "Deletion of check was successful!"
+}
+`
+
+func httpDeleteCheckTestServer() *httptest.Server {
+	return newHTTPTestServer(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Content-Type", "application/json")
+		http.Error(w, deleteCheckOutputText, http.StatusOK)
+	})
 }
 
 func TestCheckNewWithEnv(t *testing.T) {
@@ -583,6 +677,225 @@ func TestGetDetailedCheckError(t *testing.T) {
 	c := New(cfg)
 	in := getDetailedCheckInputData()
 	_, err := c.GetDetailedCheck(in)
+
+	if err == nil {
+		t.Fatalf("Expected error, none found")
+	}
+
+	expected := errorResponse
+
+	if err.Error() != expected {
+		t.Fatalf("expected %s, got %s", expected, err)
+	}
+}
+
+func TestCreateCheck(t *testing.T) {
+	ts := httpCreateCheckTestServer()
+	defer ts.Close()
+	cfg := pingdomConfig()
+	cfg.Endpoint = ts.URL
+	c := New(cfg)
+	in := createCheckInputHTTPData()
+	out, err := c.CreateCheck(in)
+
+	if err != nil {
+		t.Fatalf("Unexpected request error: %s", err)
+	}
+
+	expected := createCheckOutputData()
+
+	if reflect.DeepEqual(expected, out) == false {
+		t.Fatalf("expected %v, got %v", expected, out)
+	}
+}
+
+func TestCreateCheckError(t *testing.T) {
+	ts := httpErrorTestServer()
+	defer ts.Close()
+	cfg := pingdomConfig()
+	cfg.Endpoint = ts.URL
+	c := New(cfg)
+	in := createCheckInputHTTPData()
+	_, err := c.CreateCheck(in)
+
+	if err == nil {
+		t.Fatalf("Expected error, none found")
+	}
+
+	expected := errorResponse
+
+	if err.Error() != expected {
+		t.Fatalf("expected %s, got %s", expected, err)
+	}
+}
+
+func TestCheckConfigurationHTTPQueryText(t *testing.T) {
+	in := createCheckInputHTTPData()
+	v, _ := query.Values(in)
+	out := v.Encode()
+	expected := checkConfigurationHTTPText
+
+	if out != expected {
+		t.Fatalf("Expected %s, got %s", expected, out)
+	}
+}
+
+func TestCheckConfigurationHTTPCustomQueryText(t *testing.T) {
+	in := createCheckInputHTTPCustomData()
+	v, _ := query.Values(in)
+	out := v.Encode()
+	expected := checkConfigurationHTTPCustomText
+
+	if out != expected {
+		t.Fatalf("Expected %s, got %s", expected, out)
+	}
+}
+
+func TestCheckConfigurationTCPQueryText(t *testing.T) {
+	in := createCheckInputTCPData()
+	v, _ := query.Values(in)
+	out := v.Encode()
+	expected := checkConfigurationTCPText
+
+	if out != expected {
+		t.Fatalf("Expected %s, got %s", expected, out)
+	}
+}
+
+func TestCheckConfigurationPingQueryText(t *testing.T) {
+	in := createCheckInputPingData()
+	v, _ := query.Values(in)
+	out := v.Encode()
+	expected := checkConfigurationPingText
+
+	if out != expected {
+		t.Fatalf("Expected %s, got %s", expected, out)
+	}
+}
+
+func TestCheckConfigurationDNSQueryText(t *testing.T) {
+	in := createCheckInputDNSData()
+	v, _ := query.Values(in)
+	out := v.Encode()
+	expected := checkConfigurationDNSText
+
+	if out != expected {
+		t.Fatalf("Expected %s, got %s", expected, out)
+	}
+}
+
+func TestCheckConfigurationUDPQueryText(t *testing.T) {
+	in := createCheckInputUDPData()
+	v, _ := query.Values(in)
+	out := v.Encode()
+	expected := checkConfigurationUDPText
+
+	if out != expected {
+		t.Fatalf("Expected %s, got %s", expected, out)
+	}
+}
+
+func TestCheckConfigurationSMTPQueryText(t *testing.T) {
+	in := createCheckInputSMTPData()
+	v, _ := query.Values(in)
+	out := v.Encode()
+	expected := checkConfigurationSMTPText
+
+	if out != expected {
+		t.Fatalf("Expected %s, got %s", expected, out)
+	}
+}
+
+func TestCheckConfigurationPOP3QueryText(t *testing.T) {
+	in := createCheckInputPOP3Data()
+	v, _ := query.Values(in)
+	out := v.Encode()
+	expected := checkConfigurationPOP3Text
+
+	if out != expected {
+		t.Fatalf("Expected %s, got %s", expected, out)
+	}
+}
+
+func TestCheckConfigurationIMAPQueryText(t *testing.T) {
+	in := createCheckInputIMAPData()
+	v, _ := query.Values(in)
+	out := v.Encode()
+	expected := checkConfigurationIMAPText
+
+	if out != expected {
+		t.Fatalf("Expected %s, got %s", expected, out)
+	}
+}
+
+func TestModifyCheck(t *testing.T) {
+	ts := httpModifyCheckTestServer()
+	defer ts.Close()
+	cfg := pingdomConfig()
+	cfg.Endpoint = ts.URL
+	c := New(cfg)
+	in := modifyCheckInputHTTPData()
+	out, err := c.ModifyCheck(in)
+
+	if err != nil {
+		t.Fatalf("Unexpected request error: %s", err)
+	}
+
+	expected := modifyCheckOutputData()
+
+	if reflect.DeepEqual(expected, out) == false {
+		t.Fatalf("expected %v, got %v", expected, out)
+	}
+}
+
+func TestModifyCheckError(t *testing.T) {
+	ts := httpErrorTestServer()
+	defer ts.Close()
+	cfg := pingdomConfig()
+	cfg.Endpoint = ts.URL
+	c := New(cfg)
+	in := modifyCheckInputHTTPData()
+	_, err := c.ModifyCheck(in)
+
+	if err == nil {
+		t.Fatalf("Expected error, none found")
+	}
+
+	expected := errorResponse
+
+	if err.Error() != expected {
+		t.Fatalf("expected %s, got %s", expected, err)
+	}
+}
+
+func TestDeleteCheck(t *testing.T) {
+	ts := httpDeleteCheckTestServer()
+	defer ts.Close()
+	cfg := pingdomConfig()
+	cfg.Endpoint = ts.URL
+	c := New(cfg)
+	in := deleteCheckInputData()
+	out, err := c.DeleteCheck(in)
+
+	if err != nil {
+		t.Fatalf("Unexpected request error: %s", err)
+	}
+
+	expected := deleteCheckOutputData()
+
+	if reflect.DeepEqual(expected, out) == false {
+		t.Fatalf("expected %v, got %v", expected, out)
+	}
+}
+
+func TestDeleteCheckError(t *testing.T) {
+	ts := httpErrorTestServer()
+	defer ts.Close()
+	cfg := pingdomConfig()
+	cfg.Endpoint = ts.URL
+	c := New(cfg)
+	in := deleteCheckInputData()
+	_, err := c.DeleteCheck(in)
 
 	if err == nil {
 		t.Fatalf("Expected error, none found")

@@ -600,15 +600,23 @@ type CreateCheckInput struct {
 type CreateCheckOutput struct {
 	_ struct{}
 
+	// The check data.
+	Check createCheckEntry
+}
+
+// createCheckEntry is the actual check data in the output of CreateCheck.
+type createCheckEntry struct {
+	_ struct{}
+
 	// The ID of the check that you want to get a description for.
-	CheckID int
+	ID int
 
 	// The name of the check.
-	CheckName string
+	Name string
 }
 
 // CreateCheck gets a list of available checks based on a specific set of filters.
-func (c *Check) CreateCheck(in GetCheckListInput) (out GetCheckListOutput, err error) {
+func (c *Check) CreateCheck(in CreateCheckInput) (out CreateCheckOutput, err error) {
 	err = c.SendRequest("POST", "/api/2.0/checks", &in, &out)
 	return
 }
@@ -639,7 +647,7 @@ type ModifyCheckOutput struct {
 }
 
 // ModifyCheck gets a list of available checks based on a specific set of filters.
-func (c *Check) ModifyCheck(in GetCheckListInput) (out GetCheckListOutput, err error) {
+func (c *Check) ModifyCheck(in ModifyCheckInput) (out ModifyCheckOutput, err error) {
 	err = c.SendRequest("POST", "/api/2.0/checks", &in, &out)
 	return
 }
@@ -661,7 +669,7 @@ type DeleteCheckOutput struct {
 }
 
 // DeleteCheck gets detailed information about a single check.
-func (c *Check) DeleteCheck(in GetDetailedCheckInput) (out GetDetailedCheckOutput, err error) {
+func (c *Check) DeleteCheck(in DeleteCheckInput) (out DeleteCheckOutput, err error) {
 	err = c.SendRequest("DELETE", fmt.Sprintf("/api/2.0/checks/%d", in.CheckID), nil, &out)
 	return
 }
