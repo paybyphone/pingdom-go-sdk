@@ -1,4 +1,4 @@
-package contact
+package contacts
 
 import (
 	"net/http"
@@ -66,8 +66,8 @@ const getContactListInputText = "limit=10&offset=1"
 
 func getContactListOutputData() GetContactListOutput {
 	return GetContactListOutput{
-		Contacts: []contactListEntry{
-			contactListEntry{
+		Contacts: []ContactListEntry{
+			ContactListEntry{
 				ID:                 111250,
 				Name:               "John Doe",
 				Email:              "john@johnsdomain.com",
@@ -80,7 +80,7 @@ func getContactListOutputData() GetContactListOutput {
 				AndroidTokens:      []string{"eefff", "gghhh"},
 				Paused:             true,
 			},
-			contactListEntry{
+			ContactListEntry{
 				ID:                 111251,
 				Name:               "Jane Doe",
 				Email:              "jane@janesdomain.com",
@@ -134,8 +134,8 @@ func httpGetContactListTestServer() *httptest.Server {
 	})
 }
 
-func contactConfigurationData() contactConfiguration {
-	return contactConfiguration{
+func ContactConfigurationData() ContactConfiguration {
+	return ContactConfiguration{
 		Name:               "John Doe",
 		Email:              "john@johnsdomain.com",
 		CellPhone:          "5555555",
@@ -149,11 +149,11 @@ func contactConfigurationData() contactConfiguration {
 
 func createContactInputData() CreateContactInput {
 	return CreateContactInput{
-		contactConfiguration: contactConfigurationData(),
+		ContactConfiguration: ContactConfigurationData(),
 	}
 }
 
-const contactConfigurationText = "cellphone=5555555&countrycode=46&countryiso=SE&defaultsmsprovider=clickatell&directtwitter=true&email=john%40johnsdomain.com&name=John+Doe&twitteruser=%40jdoe"
+const ContactConfigurationText = "cellphone=5555555&countrycode=46&countryiso=SE&defaultsmsprovider=clickatell&directtwitter=true&email=john%40johnsdomain.com&name=John+Doe&twitteruser=%40jdoe"
 
 func createContactOutputData() CreateContactOutput {
 	return CreateContactOutput{
@@ -182,7 +182,7 @@ func httpCreateContactTestServer() *httptest.Server {
 
 func modifyContactInputHTTPData() ModifyContactInput {
 	return ModifyContactInput{
-		contactConfiguration: contactConfigurationData(),
+		ContactConfiguration: ContactConfigurationData(),
 	}
 }
 
@@ -319,7 +319,7 @@ func TestContactConfigurationQueryText(t *testing.T) {
 	in := createContactInputData()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := contactConfigurationText
+	expected := ContactConfigurationText
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)

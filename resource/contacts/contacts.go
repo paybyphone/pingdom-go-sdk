@@ -1,4 +1,4 @@
-package contact
+package contacts
 
 import (
 	"fmt"
@@ -20,8 +20,8 @@ func New(configs ...pingdom.Config) *Contact {
 	return c
 }
 
-// contactListEntry holds a single contact from GetContactListOutput.
-type contactListEntry struct {
+// ContactListEntry holds a single contact from GetContactListOutput.
+type ContactListEntry struct {
 	_ struct{}
 
 	// The contact identifier.
@@ -78,7 +78,7 @@ type GetContactListOutput struct {
 	_ struct{}
 
 	// The list of matched contacts.
-	Contacts []contactListEntry
+	Contacts []ContactListEntry
 }
 
 // GetContactList gets a list of available contacts based on a specific set of
@@ -88,9 +88,9 @@ func (c *Contact) GetContactList(in GetContactListInput) (out GetContactListOutp
 	return
 }
 
-// contactConfiguration is the structure for the create and modify
-// contact functions.
-type contactConfiguration struct {
+// ContactConfiguration is the structure for the create and modify
+// Contact functions.
+type ContactConfiguration struct {
 	_ struct{}
 
 	// The contact name.
@@ -129,7 +129,7 @@ type contactConfiguration struct {
 type CreateContactInput struct {
 	_ struct{}
 
-	contactConfiguration
+	ContactConfiguration
 }
 
 // CreateContactOutput contains the output for the CreateContact function.
@@ -165,7 +165,7 @@ type ModifyContactInput struct {
 	ContactID int `url:"-"`
 
 	// The replacement contact configuration.
-	contactConfiguration
+	ContactConfiguration
 }
 
 // ModifyContactOutput contains the output for the ModifyContact function.
