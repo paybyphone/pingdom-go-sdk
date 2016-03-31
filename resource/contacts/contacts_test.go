@@ -5,9 +5,11 @@ import (
 	"net/http/httptest"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/google/go-querystring/query"
+	"github.com/paybyphone/pingdom-go-sdk/integration"
 	"github.com/paybyphone/pingdom-go-sdk/pingdom"
 )
 
@@ -180,7 +182,7 @@ func httpCreateContactTestServer() *httptest.Server {
 	})
 }
 
-func modifyContactInputHTTPData() ModifyContactInput {
+func modifyContactInputData() ModifyContactInput {
 	return ModifyContactInput{
 		ContactConfiguration: ContactConfigurationData(),
 	}
@@ -372,7 +374,7 @@ func TestModifyContact(t *testing.T) {
 	cfg := pingdomConfig()
 	cfg.Endpoint = ts.URL
 	c := New(cfg)
-	in := modifyContactInputHTTPData()
+	in := modifyContactInputData()
 	out, err := c.ModifyContact(in)
 
 	if err != nil {
@@ -392,7 +394,7 @@ func TestModifyContactError(t *testing.T) {
 	cfg := pingdomConfig()
 	cfg.Endpoint = ts.URL
 	c := New(cfg)
-	in := modifyContactInputHTTPData()
+	in := modifyContactInputData()
 	_, err := c.ModifyContact(in)
 
 	if err == nil {
@@ -444,4 +446,86 @@ func TestDeleteContactError(t *testing.T) {
 	if err.Error() != expected {
 		t.Fatalf("expected %s, got %s", expected, err)
 	}
+}
+
+// testAccContactsCRUDCreate runs the Create section of the CRUD test
+// (using CreateContact).
+func testAccContactsCRUDCreate(t *testing.T, in CreateContactInput) int {
+	c := New()
+	out, err := c.CreateContact(in)
+	if err != nil {
+		t.Fatalf("Error creating contact: %v", err)
+	}
+	if out.Contact.ID == 0 {
+		t.Fatalf("Error reading contact ID from output (out.Contact.ID was empty)")
+	}
+	return out.Contact.ID
+}
+
+// testAccContactsCRUDRead runs the Read section of the CRUD test
+// (using GetContactList).
+func testAccContactsCRUDRead(t *testing.T, id int, name string) {
+	c := New()
+	out, err := c.GetContactList(GetContactListInput{})
+	if err != nil {
+		t.Fatalf("Error listing contacts: %v", err)
+	}
+
+	var found bool
+
+	for _, v := range out.Contacts {
+		if v.ID == id {
+			found = true
+			if v.Name != name {
+				t.Fatalf("Expected Name to be %s, got %v", name, v.Name)
+			}
+		}
+	}
+	if found == false {
+		t.Fatalf("Could not find created contact in contact list")
+	}
+}
+
+// testAccContactsCRUDUpdate runs the Update section of the CRUD test
+// (using UpdateContact).
+//
+// Note that this also contacts  by proxy so that we can contact
+// that the update took effect.
+func testAccContactsCRUDUpdate(t *testing.T, id int, in ModifyContactInput) {
+	c := New()
+	in.Name = "John Doe (updated)"
+	in.ContactID = id
+	_, err := c.ModifyContact(in)
+	if err != nil {
+		t.Fatalf("Error updating contact: %v", err)
+	}
+
+	testAccContactsCRUDRead(t, id, "John Doe (updated)")
+}
+
+// testAccContactsCRUDDelete runs the Delete section of the CRUD test
+// (using DeleteContact).
+func testAccContactsCRUDDelete(t *testing.T, id int) {
+	c := New()
+	params := DeleteContactInput{
+		ContactID: id,
+	}
+	out, err := c.DeleteContact(params)
+	if err != nil {
+		t.Fatalf("Error deleting contact: %v", err)
+	}
+	if strings.HasPrefix(out.Message, "Deletion of contact was successful!") == false {
+		t.Fatalf("Expected out.Message to start with Deletion of contact was successful!, got %v", out.Message)
+	}
+}
+
+// TestAccContactsCRUD runs a full create-read-update-delete test for a Pingdom
+// contact.
+func TestAccContactsCRUD(t *testing.T) {
+	testacc.VetAccConditions(t)
+
+	id := testAccContactsCRUDCreate(t, createContactInputData())
+	testAccContactsCRUDRead(t, id, "John Doe")
+	testAccContactsCRUDUpdate(t, id, modifyContactInputData())
+	testAccContactsCRUDDelete(t, id)
 }
