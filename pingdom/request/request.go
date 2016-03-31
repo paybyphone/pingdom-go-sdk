@@ -72,7 +72,7 @@ func (r *requestResponse) BodyString() string {
 func (r *requestResponse) ReadResponseJSON(v interface{}) error {
 	err := json.Unmarshal(r.Body, v)
 	if err != nil {
-		return fmt.Errorf("JSON parsing error: %s", err)
+		return fmt.Errorf("JSON parsing error: %s - Response body: %s", err, r.Body)
 	}
 	return nil
 }

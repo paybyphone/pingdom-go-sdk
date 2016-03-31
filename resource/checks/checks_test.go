@@ -5,6 +5,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/google/go-querystring/query"
@@ -294,7 +295,7 @@ func CheckConfigurationData() CheckConfiguration {
 
 func CheckConfigurationHTTPData() CheckConfigurationHTTP {
 	return CheckConfigurationHTTP{
-		URL:              "example.com",
+		URL:              "/test",
 		Encryption:       true,
 		Port:             443,
 		Auth:             "foo:bar",
@@ -314,15 +315,15 @@ func createCheckInputHTTPData() CreateCheckInput {
 	return c
 }
 
-const CheckConfigurationHTTPText = "auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=443&postdata=baz&requestheader0=X-Header1%3Afoo&requestheader1=X-Header2%3Abar&requestheader2=X-Header3%3Abaz&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&shouldcontain=foo&shouldnotcontain=bar&tags=foo%2Cbar&type=http&url=example.com"
+const CheckConfigurationHTTPText = "auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=443&postdata=baz&requestheader0=X-Header1%3Afoo&requestheader1=X-Header2%3Abar&requestheader2=X-Header3%3Abaz&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&shouldcontain=foo&shouldnotcontain=bar&tags=foo%2Cbar&type=http&url=%2Ftest"
 
 func CheckConfigurationHTTPCustomData() CheckConfigurationHTTPCustom {
 	return CheckConfigurationHTTPCustom{
-		URL:            "example.com",
+		URL:            "/test",
 		Encryption:     true,
 		Port:           443,
 		Auth:           "foo:bar",
-		AdditionalURLs: []string{"mysite.com", "myothersite.com"},
+		AdditionalURLs: []string{"www.mysite.com", "www.myothersite.com"},
 	}
 }
 
@@ -335,7 +336,7 @@ func createCheckInputHTTPCustomData() CreateCheckInput {
 	return c
 }
 
-const CheckConfigurationHTTPCustomText = "additionalurls=mysite.com%3Bmyothersite.com&auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=443&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=httpcustom&url=example.com"
+const CheckConfigurationHTTPCustomText = "additionalurls=www.mysite.com%3Bwww.myothersite.com&auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=443&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=httpcustom&url=%2Ftest"
 
 func CheckConfigurationTCPData() CheckConfigurationTCP {
 	return CheckConfigurationTCP{
@@ -496,7 +497,70 @@ func modifyCheckInputHTTPData() ModifyCheckInput {
 		CheckConfiguration:     CheckConfigurationData(),
 		CheckConfigurationHTTP: CheckConfigurationHTTPData(),
 	}
-	c.Type = "http"
+	return c
+}
+
+func modifyCheckInputHTTPCustomData() ModifyCheckInput {
+	c := ModifyCheckInput{
+		CheckConfiguration:           CheckConfigurationData(),
+		CheckConfigurationHTTPCustom: CheckConfigurationHTTPCustomData(),
+	}
+	return c
+}
+
+func modifyCheckInputTCPData() ModifyCheckInput {
+	c := ModifyCheckInput{
+		CheckConfiguration:    CheckConfigurationData(),
+		CheckConfigurationTCP: CheckConfigurationTCPData(),
+	}
+	return c
+}
+
+func modifyCheckInputPingData() ModifyCheckInput {
+	c := ModifyCheckInput{
+		CheckConfiguration:     CheckConfigurationData(),
+		CheckConfigurationPing: CheckConfigurationPingData(),
+	}
+	return c
+}
+
+func modifyCheckInputDNSData() ModifyCheckInput {
+	c := ModifyCheckInput{
+		CheckConfiguration:    CheckConfigurationData(),
+		CheckConfigurationDNS: CheckConfigurationDNSData(),
+	}
+	return c
+}
+
+func modifyCheckInputUDPData() ModifyCheckInput {
+	c := ModifyCheckInput{
+		CheckConfiguration:    CheckConfigurationData(),
+		CheckConfigurationUDP: CheckConfigurationUDPData(),
+	}
+	return c
+}
+
+func modifyCheckInputSMTPData() ModifyCheckInput {
+	c := ModifyCheckInput{
+		CheckConfiguration:     CheckConfigurationData(),
+		CheckConfigurationSMTP: CheckConfigurationSMTPData(),
+	}
+	return c
+}
+
+func modifyCheckInputPOP3Data() ModifyCheckInput {
+	c := ModifyCheckInput{
+		CheckConfiguration:     CheckConfigurationData(),
+		CheckConfigurationPOP3: CheckConfigurationPOP3Data(),
+	}
+	return c
+}
+
+func modifyCheckInputIMAPData() ModifyCheckInput {
+	c := ModifyCheckInput{
+		CheckConfiguration:     CheckConfigurationData(),
+		CheckConfigurationIMAP: CheckConfigurationIMAPData(),
+	}
 	return c
 }
 
@@ -913,6 +977,7 @@ func TestDeleteCheckError(t *testing.T) {
 // (using CreateCheck).
 func testAccChecksCRUDCreate(t *testing.T, in CreateCheckInput) int {
 	c := New()
+	in.ContactIDs = []int{}
 	out, err := c.CreateCheck(in)
 	if err != nil {
 		t.Fatalf("Error creating check: %v", err)
@@ -979,6 +1044,7 @@ func testAccChecksCRUDReadDetail(t *testing.T, id int) {
 // that the update took effect.
 func testAccChecksCRUDUpdate(t *testing.T, id int, in ModifyCheckInput) {
 	c := New()
+	in.ContactIDs = []int{}
 	in.Name = "My check (updated)"
 	in.CheckID = id
 	_, err := c.ModifyCheck(in)
@@ -1011,19 +1077,130 @@ func testAccChecksCRUDDelete(t *testing.T, id int) {
 	if err != nil {
 		t.Fatalf("Error deleting check: %v", err)
 	}
-	if out.Message == "Deletion of check was successful!" {
-		t.Fatalf("Expected out.Message to be Deletion of check was successful!, got %v", out.Message)
+	if strings.HasPrefix(out.Message, "Deletion of check was successful!") == false {
+		t.Fatalf("Expected out.Message to start with Deletion of check was successful!, got %v", out.Message)
 	}
 }
 
-// TestAccChecksCRUD runs a full create-read-update-delete test for a Pingdom
+// TestAccChecksCRUDHTTP runs a full create-read-update-delete test for a Pingdom
 // check.
-func TestAccChecksCRUD(t *testing.T) {
+func TestAccChecksCRUDHTTP(t *testing.T) {
 	testacc.VetAccConditions(t)
 
-	id := testAccChecksCRUDCreate(t, createCheckInputHTTPData())
+	create := createCheckInputHTTPData()
+	update := modifyCheckInputHTTPData()
+	// We can't have shouldnotcontain with shouldcontain, so just empty it
+	create.ShouldContain = ""
+	update.ShouldContain = ""
+
+	id := testAccChecksCRUDCreate(t, create)
 	testAccChecksCRUDReadList(t, id)
 	testAccChecksCRUDReadDetail(t, id)
-	testAccChecksCRUDUpdate(t, id, modifyCheckInputHTTPData())
+	testAccChecksCRUDUpdate(t, id, update)
+	testAccChecksCRUDDelete(t, id)
+}
+
+// TestAccChecksCRUDHTTPCustom runs a full create-read-update-delete test for a Pingdom
+// check.
+func TestAccChecksCRUDHTTPCustom(t *testing.T) {
+	testacc.VetAccConditions(t)
+
+	create := createCheckInputHTTPCustomData()
+	update := modifyCheckInputHTTPCustomData()
+	// Remove AdditionalURLs from the parameter list. Pingdom documents it as this:
+	// additionalurls=www.mysite.com;www.myothersite.com
+	// But that parameter value produces an error. Can't find any docs giving a working
+	// example.
+	create.AdditionalURLs = []string{}
+	update.AdditionalURLs = []string{}
+
+	id := testAccChecksCRUDCreate(t, create)
+	testAccChecksCRUDReadList(t, id)
+	testAccChecksCRUDReadDetail(t, id)
+	testAccChecksCRUDUpdate(t, id, update)
+	testAccChecksCRUDDelete(t, id)
+}
+
+// TestAccChecksCRUDTCP runs a full create-read-update-delete test for a Pingdom
+// check.
+func TestAccChecksCRUDTCP(t *testing.T) {
+	testacc.VetAccConditions(t)
+
+	id := testAccChecksCRUDCreate(t, createCheckInputTCPData())
+	testAccChecksCRUDReadList(t, id)
+	testAccChecksCRUDReadDetail(t, id)
+	testAccChecksCRUDUpdate(t, id, modifyCheckInputTCPData())
+	testAccChecksCRUDDelete(t, id)
+}
+
+// TestAccChecksCRUDPing runs a full create-read-update-delete test for a Pingdom
+// check.
+func TestAccChecksCRUDPing(t *testing.T) {
+	testacc.VetAccConditions(t)
+
+	id := testAccChecksCRUDCreate(t, createCheckInputPingData())
+	testAccChecksCRUDReadList(t, id)
+	testAccChecksCRUDReadDetail(t, id)
+	testAccChecksCRUDUpdate(t, id, modifyCheckInputPingData())
+	testAccChecksCRUDDelete(t, id)
+}
+
+// TestAccChecksCRUDDNS runs a full create-read-update-delete test for a Pingdom
+// check.
+func TestAccChecksCRUDDNS(t *testing.T) {
+	testacc.VetAccConditions(t)
+
+	id := testAccChecksCRUDCreate(t, createCheckInputDNSData())
+	testAccChecksCRUDReadList(t, id)
+	testAccChecksCRUDReadDetail(t, id)
+	testAccChecksCRUDUpdate(t, id, modifyCheckInputDNSData())
+	testAccChecksCRUDDelete(t, id)
+}
+
+// TestAccChecksCRUDUDP runs a full create-read-update-delete test for a Pingdom
+// check.
+func TestAccChecksCRUDUDP(t *testing.T) {
+	testacc.VetAccConditions(t)
+
+	id := testAccChecksCRUDCreate(t, createCheckInputUDPData())
+	testAccChecksCRUDReadList(t, id)
+	testAccChecksCRUDReadDetail(t, id)
+	testAccChecksCRUDUpdate(t, id, modifyCheckInputUDPData())
+	testAccChecksCRUDDelete(t, id)
+}
+
+// TestAccChecksCRUDSMTP runs a full create-read-update-delete test for a Pingdom
+// check.
+func TestAccChecksCRUDSMTP(t *testing.T) {
+	testacc.VetAccConditions(t)
+
+	id := testAccChecksCRUDCreate(t, createCheckInputSMTPData())
+	testAccChecksCRUDReadList(t, id)
+	testAccChecksCRUDReadDetail(t, id)
+	testAccChecksCRUDUpdate(t, id, modifyCheckInputSMTPData())
+	testAccChecksCRUDDelete(t, id)
+}
+
+// TestAccChecksCRUDPOP3 runs a full create-read-update-delete test for a Pingdom
+// check.
+func TestAccChecksCRUDPOP3(t *testing.T) {
+	testacc.VetAccConditions(t)
+
+	id := testAccChecksCRUDCreate(t, createCheckInputPOP3Data())
+	testAccChecksCRUDReadList(t, id)
+	testAccChecksCRUDReadDetail(t, id)
+	testAccChecksCRUDUpdate(t, id, modifyCheckInputPOP3Data())
+	testAccChecksCRUDDelete(t, id)
+}
+
+// TestAccChecksCRUDIMAP runs a full create-read-update-delete test for a Pingdom
+// check.
+func TestAccChecksCRUDIMAP(t *testing.T) {
+	testacc.VetAccConditions(t)
+
+	id := testAccChecksCRUDCreate(t, createCheckInputIMAPData())
+	testAccChecksCRUDReadList(t, id)
+	testAccChecksCRUDReadDetail(t, id)
+	testAccChecksCRUDUpdate(t, id, modifyCheckInputIMAPData())
 	testAccChecksCRUDDelete(t, id)
 }
