@@ -77,7 +77,7 @@ func getContactListOutputData() GetContactListOutput {
 				CountryISO:         "SE",
 				DefaultSMSProvider: "clickatell",
 				DirectTwitter:      true,
-				TwitterUser:        "@jdoe",
+				TwitterUser:        "jdoe",
 				IPhoneTokens:       []string{"aabbb", "ccddd"},
 				AndroidTokens:      []string{"eefff", "gghhh"},
 				Paused:             true,
@@ -90,7 +90,7 @@ func getContactListOutputData() GetContactListOutput {
 				CountryISO:         "CA",
 				DefaultSMSProvider: "clickatell",
 				DirectTwitter:      true,
-				TwitterUser:        "@janedoe",
+				TwitterUser:        "janedoe",
 				IPhoneTokens:       []string{"iijjj", "kklll"},
 				AndroidTokens:      []string{"mmnnn", "ooppp"},
 				Paused:             true,
@@ -109,7 +109,7 @@ const getContactListOutputText = `
 		"countryiso": "SE",
 		"defaultsmsprovider": "clickatell",
 		"directtwitter": true,
-		"twitteruser": "@jdoe",
+		"twitteruser": "jdoe",
 		"iphonetokens": ["aabbb", "ccddd"],
 		"androidtokens": ["eefff", "gghhh"],
 		"paused": true
@@ -121,7 +121,7 @@ const getContactListOutputText = `
 		"countryiso": "CA",
 		"defaultsmsprovider": "clickatell",
 		"directtwitter": true,
-		"twitteruser": "@janedoe",
+		"twitteruser": "janedoe",
 		"iphonetokens": ["iijjj", "kklll"],
 		"androidtokens": ["mmnnn", "ooppp"],
 		"paused": true
@@ -145,7 +145,7 @@ func ContactConfigurationData() ContactConfiguration {
 		CountryISO:         "SE",
 		DefaultSMSProvider: "clickatell",
 		DirectTwitter:      true,
-		TwitterUser:        "@jdoe",
+		TwitterUser:        "jdoe",
 	}
 }
 
@@ -155,7 +155,7 @@ func createContactInputData() CreateContactInput {
 	}
 }
 
-const ContactConfigurationText = "cellphone=5555555&countrycode=46&countryiso=SE&defaultsmsprovider=clickatell&directtwitter=true&email=john%40johnsdomain.com&name=John+Doe&twitteruser=%40jdoe"
+const ContactConfigurationText = "cellphone=5555555&countrycode=46&countryiso=SE&defaultsmsprovider=clickatell&directtwitter=true&email=john%40johnsdomain.com&name=John+Doe&twitteruser=jdoe"
 
 func createContactOutputData() CreateContactOutput {
 	return CreateContactOutput{
@@ -215,13 +215,13 @@ func deleteContactInputData() DeleteContactInput {
 
 func deleteContactOutputData() DeleteContactOutput {
 	return DeleteContactOutput{
-		Message: "Deletion of contact was successful!",
+		Message: "Deletion of notification contact was successful!",
 	}
 }
 
 const deleteContactOutputText = `
 {
-	"message": "Deletion of contact was successful!"
+	"message": "Deletion of notification contact was successful!"
 }
 `
 
@@ -514,8 +514,8 @@ func testAccContactsCRUDDelete(t *testing.T, id int) {
 	if err != nil {
 		t.Fatalf("Error deleting contact: %v", err)
 	}
-	if strings.HasPrefix(out.Message, "Deletion of contact was successful!") == false {
-		t.Fatalf("Expected out.Message to start with Deletion of contact was successful!, got %v", out.Message)
+	if strings.HasPrefix(out.Message, "Deletion of notification contact was successful!") == false {
+		t.Fatalf("Expected out.Message to start with Deletion of notification contact was successful!, got %v", out.Message)
 	}
 }
 
