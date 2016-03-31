@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/google/go-querystring/query"
+	"github.com/paybyphone/pingdom-go-sdk/integration"
 	"github.com/paybyphone/pingdom-go-sdk/pingdom"
 )
 
@@ -906,4 +907,123 @@ func TestDeleteCheckError(t *testing.T) {
 	if err.Error() != expected {
 		t.Fatalf("expected %s, got %s", expected, err)
 	}
+}
+
+// testAccChecksCRUDCreate runs the Create section of the CRUD test
+// (using CreateCheck).
+func testAccChecksCRUDCreate(t *testing.T, in CreateCheckInput) int {
+	c := New()
+	out, err := c.CreateCheck(in)
+	if err != nil {
+		t.Fatalf("Error creating check: %v", err)
+	}
+	if out.Check.ID == 0 {
+		t.Fatalf("Error reading check ID from output (out.Check.ID was empty)")
+	}
+	return out.Check.ID
+}
+
+// testAccChecksCRUDReadList runs the Read section of the CRUD test
+// (using GetCheckList).
+//
+// This is the first part of the two-part Read test (testing both
+// GetCheckList and GetDetailedCheck).
+func testAccChecksCRUDReadList(t *testing.T, id int) {
+	c := New()
+	out, err := c.GetCheckList(GetCheckListInput{})
+	if err != nil {
+		t.Fatalf("Error listing checks: %v", err)
+	}
+
+	var found bool
+
+	for _, v := range out.Checks {
+		if v.ID == id {
+			found = true
+		}
+	}
+	if found == false {
+		t.Fatalf("Could not find created check in check list")
+	}
+}
+
+// testAccChecksCRUDReadDetail runs the Read section of the CRUD test
+// (using GetDetailedCheck).
+//
+// This is the second part of the two-part Read test (testing both
+// GetCheckList and GetDetailedCheck).
+func testAccChecksCRUDReadDetail(t *testing.T, id int) {
+	c := New()
+	params := GetDetailedCheckInput{
+		CheckID: id,
+	}
+
+	out, err := c.GetDetailedCheck(params)
+	if err != nil {
+		t.Fatalf("Error getting check detail: %v", err)
+	}
+
+	if out.Check.ID != id {
+		t.Fatalf("Expected out.Check.ID to be %d, got %v", id, out.Check.ID)
+	}
+
+	if out.Check.Hostname != "example.com" {
+		t.Fatalf("Expected out.Check.Name to be example.com, got %v", out.Check.Name)
+	}
+}
+
+// testAccChecksCRUDUpdate runs the Update section of the CRUD test
+// (using UpdateCheck).
+//
+// Note that this also checks GetDetailedCheck by proxy so that we can check
+// that the update took effect.
+func testAccChecksCRUDUpdate(t *testing.T, id int, in ModifyCheckInput) {
+	c := New()
+	in.Name = "My check (updated)"
+	in.CheckID = id
+	_, err := c.ModifyCheck(in)
+	if err != nil {
+		t.Fatalf("Error updating check: %v", err)
+	}
+
+	params := GetDetailedCheckInput{
+		CheckID: id,
+	}
+
+	out, err := c.GetDetailedCheck(params)
+	if err != nil {
+		t.Fatalf("Error getting check detail after update: %v", err)
+	}
+
+	if out.Check.Name != "My check (updated)" {
+		t.Fatalf("Expected out.Check.Name to be My check (updated), got %v", out.Check.Name)
+	}
+}
+
+// testAccChecksCRUDDelete runs the Delete section of the CRUD test
+// (using DeleteCheck).
+func testAccChecksCRUDDelete(t *testing.T, id int) {
+	c := New()
+	params := DeleteCheckInput{
+		CheckID: id,
+	}
+	out, err := c.DeleteCheck(params)
+	if err != nil {
+		t.Fatalf("Error deleting check: %v", err)
+	}
+	if out.Message == "Deletion of check was successful!" {
+		t.Fatalf("Expected out.Message to be Deletion of check was successful!, got %v", out.Message)
+	}
+}
+
+// TestAccChecksCRUD runs a full create-read-update-delete test for a Pingdom
+// check.
+func TestAccChecksCRUD(t *testing.T) {
+	testacc.VetAccConditions(t)
+
+	id := testAccChecksCRUDCreate(t, createCheckInputHTTPData())
+	testAccChecksCRUDReadList(t, id)
+	testAccChecksCRUDReadDetail(t, id)
+	testAccChecksCRUDUpdate(t, id, modifyCheckInputHTTPData())
+	testAccChecksCRUDDelete(t, id)
 }
