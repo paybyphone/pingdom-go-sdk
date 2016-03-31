@@ -1033,7 +1033,7 @@ func testAccChecksCRUDReadDetail(t *testing.T, id int) {
 	}
 
 	if out.Check.Hostname != "example.com" {
-		t.Fatalf("Expected out.Check.Name to be example.com, got %v", out.Check.Name)
+		t.Fatalf("Expected out.Check.Hostname to be example.com, got %v", out.Check.Name)
 	}
 }
 
