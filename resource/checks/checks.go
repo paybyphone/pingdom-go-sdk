@@ -183,9 +183,7 @@ type DetailedCheckEntryTCP struct {
 
 // DetailedCheckEntryPing - Output for the Ping check type,
 // detailed check method.
-type DetailedCheckEntryPing struct {
-	_ struct{}
-}
+type DetailedCheckEntryPing []interface{}
 
 // DetailedCheckEntryDNS - Output for the DNS check type,
 // detailed check method.
