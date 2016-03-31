@@ -84,7 +84,7 @@ type GetContactListOutput struct {
 // GetContactList gets a list of available contacts based on a specific set of
 // filters.
 func (c *Contact) GetContactList(in GetContactListInput) (out GetContactListOutput, err error) {
-	err = c.SendRequest("GET", "/api/2.0/contacts", &in, &out)
+	err = c.SendRequest("GET", "/api/2.0/notification_contacts", &in, &out)
 	return
 }
 
@@ -153,7 +153,7 @@ type createContactEntry struct {
 
 // CreateContact creates a contact for use with other Pingdom resources, such as checks.
 func (c *Contact) CreateContact(in CreateContactInput) (out CreateContactOutput, err error) {
-	err = c.SendRequest("POST", "/api/2.0/contacts", &in, &out)
+	err = c.SendRequest("POST", "/api/2.0/notification_contacts", &in, &out)
 	return
 }
 
@@ -178,7 +178,7 @@ type ModifyContactOutput struct {
 
 // ModifyContact modifies an existing contact.
 func (c *Contact) ModifyContact(in ModifyContactInput) (out ModifyContactOutput, err error) {
-	err = c.SendRequest("PUT", fmt.Sprintf("/api/2.0/contacts/%d", in.ContactID), &in, &out)
+	err = c.SendRequest("PUT", fmt.Sprintf("/api/2.0/notification_contacts/%d", in.ContactID), &in, &out)
 	return
 }
 
@@ -200,6 +200,6 @@ type DeleteContactOutput struct {
 
 // DeleteContact deletes an existing contact from Pingdom.
 func (c *Contact) DeleteContact(in DeleteContactInput) (out DeleteContactOutput, err error) {
-	err = c.SendRequest("DELETE", fmt.Sprintf("/api/2.0/contacts/%d", in.ContactID), nil, &out)
+	err = c.SendRequest("DELETE", fmt.Sprintf("/api/2.0/notification_contacts/%d", in.ContactID), nil, &out)
 	return
 }
