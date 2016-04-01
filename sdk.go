@@ -19,6 +19,9 @@
 // framework and data structuring is set up in a way to make it easily
 // exstensible, ensuring support for new features can be added in without fuss.
 //
-// For further usage instructions see the README either in the source
-// or at: https://github.com/paybyphone/pingdom-go-sdk/blob/master/README.md
+// For installation instructions, see the README.md either in the source
+// or at: https://github.com/paybyphone/pingdom-go-sdk/blob/master/README.md.
+//
+// For SDK usage, see the GoDoc at
+// https://godoc.org/github.com/paybyphone/pingdom-go-sdk.
 package sdk
