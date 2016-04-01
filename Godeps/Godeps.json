@@ -1,0 +1,18 @@
+{
+	"ImportPath": "github.com/paybyphone/pingdom-go-sdk",
+	"GoVersion": "go1.6",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/google/go-querystring/query",
+			"Rev": "7ba105af3fc6c4ff240d8b9dea5c88175e97db91"
+		},
+		{
+			"ImportPath": "github.com/imdario/mergo",
+			"Comment": "0.2.2-2-gea01514",
+			"Rev": "ea0151498788f6fab6365eae24f29f41c0ac0acc"
+		}
+	]
+}
