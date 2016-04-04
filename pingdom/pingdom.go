@@ -53,13 +53,10 @@ type Config struct {
 
 	// The API endpoint. Changing this is only recommended for testing.
 	Endpoint string
-
-	// The proxy config, if any.
-	Proxy string
 }
 
 // DefaultConfigProvider supplies a default configuration:
-//  * Endpoint defaults to https://api.pingdom.com. Proxy is unset.
+//  * Endpoint defaults to https://api.pingdom.com.
 //  * EmailAddress defaults to PINGDOM_EMAIL_ADDRESS, if set, otherwise empty
 //  * Password defaults to PINGDOM_PASSWORD, if set, otherwise empty
 //  * AppKey defaults to PINGDOM_APP_KEY, if set, otherwise empty
