@@ -1,3 +1,19 @@
+// Copyright 2016 PayByPhone Technologies, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// Package request contains structures and methods for interfacing with the
+// Pingdom REST API.
 package request
 
 import (
@@ -24,7 +40,7 @@ type errorResponseErrorType struct {
 	ErrorMessage string
 }
 
-// ErrorResponse - structure of a Pingdom JSON error response
+// ErrorResponse is the structure of a Pingdom JSON error response.
 type ErrorResponse struct {
 	Error errorResponseErrorType
 }
@@ -47,7 +63,7 @@ type Request struct {
 	Output interface{}
 }
 
-// requestResponse - Unexported struct that encompasses status codes
+// requestResponse is an unexported struct that encompasses status codes
 // and request body in a fashion that can be read after the request
 // is closed.
 type requestResponse struct {
@@ -61,13 +77,13 @@ type requestResponse struct {
 	Body []byte
 }
 
-// BodyString - convert requestResponse.Body to string.
+// BodyString converts requestResponse.Body to string.
 func (r *requestResponse) BodyString() string {
 	buf := bytes.NewBuffer(r.Body)
 	return buf.String()
 }
 
-// readResponseJSON - Read the response body as JSON into variable
+// readResponseJSON reads the response body as JSON into variable
 // pointed to by v.
 func (r *requestResponse) ReadResponseJSON(v interface{}) error {
 	err := json.Unmarshal(r.Body, v)
@@ -77,7 +93,7 @@ func (r *requestResponse) ReadResponseJSON(v interface{}) error {
 	return nil
 }
 
-// newRequestResponse - Create a new requestResponse instance off a HTTP
+// newRequestResponse creates a new requestResponse instance off a HTTP
 // response. Warning: This also closes the Body.
 func newRequestResponse(r *http.Response) *requestResponse {
 	rr := &requestResponse{
@@ -93,8 +109,8 @@ func newRequestResponse(r *http.Response) *requestResponse {
 	return rr
 }
 
-// Take an interface{} and convert to a x-www-urlencoded query string,
-// suitable for use within Pingdom GET/POST/PUT/DELETE requests.
+// dataToQueryString takes an interface{} and convert to a x-www-urlencoded
+// query string, suitable for use within Pingdom GET/POST/PUT/DELETE requests.
 // Returns runtime panic if for some reason d is not a struct.
 func dataToQueryString(d interface{}) string {
 	v, err := query.Values(d)
@@ -104,7 +120,7 @@ func dataToQueryString(d interface{}) string {
 	return v.Encode()
 }
 
-// Send - Sends a request to the API endpoint, and parse response.
+// Send sends a request to the API endpoint, and parsees the response.
 func (r *Request) Send() error {
 	qs := dataToQueryString(r.Input)
 	var req *http.Request
@@ -155,7 +171,7 @@ func (r *Request) Send() error {
 	return nil
 }
 
-// handleError - handles a Pingdom API error response.
+// handleError handles a Pingdom API error response.
 func handleError(r *requestResponse) error {
 	er := ErrorResponse{}
 	err := r.ReadResponseJSON(&er)
@@ -169,7 +185,7 @@ func handleError(r *requestResponse) error {
 	return fmt.Errorf("%s (%d): %s", er.Error.StatusDesc, r.StatusCode, er.Error.ErrorMessage)
 }
 
-// NewRequest - Create a new request instance with configuration set.
+// NewRequest creates a new request instance with configuration set.
 func NewRequest(c pingdom.Config) *Request {
 	r := &Request{
 		Config: c,

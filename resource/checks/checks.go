@@ -1,3 +1,18 @@
+// Copyright 2016 PayByPhone Technologies, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// Package checks manages the check-releated methods of the API.
 package checks
 
 import (
@@ -20,7 +35,7 @@ func New(configs ...pingdom.Config) *Check {
 	return c
 }
 
-// CheckListEntryTags - unexported type for a check list entry's tags.
+// CheckListEntryTags contains the tags for a check returned by GetCheckList.
 type CheckListEntryTags struct {
 	_ struct{}
 
@@ -34,7 +49,7 @@ type CheckListEntryTags struct {
 	Count int
 }
 
-// CheckListEntry - holds a single check from GetCheckListOutput.
+// CheckListEntry holds a single check from GetCheckListOutput.
 type CheckListEntry struct {
 	_ struct{}
 
@@ -75,7 +90,8 @@ type CheckListEntry struct {
 	Tags []CheckListEntryTags
 }
 
-// GetCheckListInput - Input to send the GetCheckListInput function.
+// GetCheckListInput contains the input to send the GetCheckListInput
+// function.
 type GetCheckListInput struct {
 	_ struct{}
 
@@ -93,7 +109,7 @@ type GetCheckListInput struct {
 	Tags []string `url:"tags,omitempty,comma"`
 }
 
-// GetCheckListOutput - Output for the GetCheckList function.
+// GetCheckListOutput contains the output for the GetCheckList function.
 type GetCheckListOutput struct {
 	_ struct{}
 
@@ -107,8 +123,8 @@ func (c *Check) GetCheckList(in GetCheckListInput) (out GetCheckListOutput, err 
 	return
 }
 
-// DetailedCheckEntryHTTP - Output for the HTTP check type,
-// detailed check method.
+// DetailedCheckEntryHTTP is the HTTP check details for the data returned by
+// GetDetailedCheck.
 type DetailedCheckEntryHTTP struct {
 	_ struct{}
 
@@ -142,8 +158,8 @@ type DetailedCheckEntryHTTP struct {
 	RequestHeaders map[string]string
 }
 
-// DetailedCheckEntryHTTPCustom - Output for the Custom HTTP check type,
-// detailed check method.
+// DetailedCheckEntryHTTPCustom is the Custom HTTP check details for the data
+// returned by GetDetailedCheck.
 type DetailedCheckEntryHTTPCustom struct {
 	_ struct{}
 
@@ -166,8 +182,8 @@ type DetailedCheckEntryHTTPCustom struct {
 	AdditionalURLs []string
 }
 
-// DetailedCheckEntryTCP - Output for the TCP check type,
-// detailed check method.
+// DetailedCheckEntryTCP is the TCP check details for the data returned by
+// GetDetailedCheck.
 type DetailedCheckEntryTCP struct {
 	_ struct{}
 
@@ -181,12 +197,12 @@ type DetailedCheckEntryTCP struct {
 	StringToExpect string
 }
 
-// DetailedCheckEntryPing - Output for the Ping check type,
-// detailed check method.
+// DetailedCheckEntryPing is the Ping check details for the data returned by
+// GetDetailedCheck.
 type DetailedCheckEntryPing []interface{}
 
-// DetailedCheckEntryDNS - Output for the DNS check type,
-// detailed check method.
+// DetailedCheckEntryDNS is the DNS check details for the data returned by
+// GetDetailedCheck.
 type DetailedCheckEntryDNS struct {
 	_ struct{}
 
@@ -197,8 +213,8 @@ type DetailedCheckEntryDNS struct {
 	ExpectedIP string
 }
 
-// DetailedCheckEntryUDP - Output for the UDP check type,
-// detailed check method.
+// DetailedCheckEntryUDP is the UDP check details for the data returned by
+// GetDetailedCheck.
 type DetailedCheckEntryUDP struct {
 	_ struct{}
 
@@ -212,8 +228,8 @@ type DetailedCheckEntryUDP struct {
 	StringToExpect string
 }
 
-// DetailedCheckEntrySMTP - Output for the SMTP check type,
-// detailed check method.
+// DetailedCheckEntrySMTP is the SMTP check details for the data returned by
+// GetDetailedCheck.
 type DetailedCheckEntrySMTP struct {
 	_ struct{}
 
@@ -233,8 +249,8 @@ type DetailedCheckEntrySMTP struct {
 	StringToExpect string
 }
 
-// DetailedCheckEntryPOP3 - Output for the POP3 check type,
-// detailed check method.
+// DetailedCheckEntryPOP3 is the POP3 check details for the data returned by
+// GetDetailedCheck.
 type DetailedCheckEntryPOP3 struct {
 	_ struct{}
 
@@ -248,8 +264,8 @@ type DetailedCheckEntryPOP3 struct {
 	StringToExpect string
 }
 
-// DetailedCheckEntryIMAP - Output for the IMAP check type,
-// detailed check method.
+// DetailedCheckEntryIMAP is the IMAP check details for the data returned by
+// GetDetailedCheck.
 type DetailedCheckEntryIMAP struct {
 	_ struct{}
 
@@ -264,7 +280,7 @@ type DetailedCheckEntryIMAP struct {
 }
 
 // DetailedCheckEntryTypes is a collection of various structs containing
-// type-specific details.
+// type-specific details, for the data returned by GetDetailedCheck.
 type DetailedCheckEntryTypes struct {
 	_ struct{}
 
@@ -279,7 +295,7 @@ type DetailedCheckEntryTypes struct {
 	IMAP       DetailedCheckEntryIMAP
 }
 
-// DetailedCheckEntry - Unexported entry for GetDetailedCheckOutput.
+// DetailedCheckEntry contains the check data returned by GetDetailedCheck.
 type DetailedCheckEntry struct {
 	_ struct{}
 
@@ -345,7 +361,7 @@ type DetailedCheckEntry struct {
 	IPv6 bool
 }
 
-// GetDetailedCheckInput - Input to send to the detailed check method.
+// GetDetailedCheckInput contains the input to send to GetDetailedCheck.
 type GetDetailedCheckInput struct {
 	_ struct{}
 
@@ -353,7 +369,7 @@ type GetDetailedCheckInput struct {
 	CheckID int
 }
 
-// GetDetailedCheckOutput - Output for the detailed check method.
+// GetDetailedCheckOutput contains the output from GetDetailedCheck.
 type GetDetailedCheckOutput struct {
 	_ struct{}
 
@@ -367,8 +383,8 @@ func (c *Check) GetDetailedCheck(in GetDetailedCheckInput) (out GetDetailedCheck
 	return
 }
 
-// CheckConfiguration - Structure for the create and modify
-// check functions.
+// CheckConfiguration is the structure for CreateCheck and ModifyCheck. This
+// structure contains basic check detail common to all checks.
 type CheckConfiguration struct {
 	_ struct{}
 
@@ -434,7 +450,9 @@ type CheckConfiguration struct {
 	IPv6 bool `url:"ipv6,omitempty"`
 }
 
-// CheckConfigurationHTTP - Configuration for the HTTP check type.
+// CheckConfigurationHTTP contains check configuration data specific for the
+// HTTP check type. This is passed along with CheckConfiguration to the
+// CreateCheck and ModifyCheck functions to manage checks.
 type CheckConfigurationHTTP struct {
 	_ struct{}
 
@@ -468,7 +486,9 @@ type CheckConfigurationHTTP struct {
 	RequestHeaders []string `url:"requestheader,numbered,omitempty"`
 }
 
-// CheckConfigurationHTTPCustom - Configuration for the Custom HTTP check type.
+// CheckConfigurationHTTPCustom contains check configuration data specific for
+// the Custom HTTP check type. This is passed along with CheckConfiguration to
+// the CreateCheck and ModifyCheck functions to manage checks.
 type CheckConfigurationHTTPCustom struct {
 	_ struct{}
 
@@ -489,7 +509,9 @@ type CheckConfigurationHTTPCustom struct {
 	AdditionalURLs []string `url:"additionalurls,semicolon,omitempty"`
 }
 
-// CheckConfigurationTCP - Configuration for the TCP check type.
+// CheckConfigurationTCP contains check configuration data specific for the
+// TCP check type. This is passed along with CheckConfiguration to the
+// CreateCheck and ModifyCheck functions to manage checks.
 type CheckConfigurationTCP struct {
 	_ struct{}
 
@@ -503,12 +525,16 @@ type CheckConfigurationTCP struct {
 	StringToExpect string `url:"stringtoexpect,omitempty"`
 }
 
-// CheckConfigurationPing - Configuration for the Ping check type.
+// CheckConfigurationPing contains check configuration data specific for the
+// Ping check type. This is passed along with CheckConfiguration to the
+// CreateCheck and ModifyCheck functions to manage checks.
 type CheckConfigurationPing struct {
 	_ struct{}
 }
 
-// CheckConfigurationDNS - Configuration for the DNS check type.
+// CheckConfigurationDNS contains check configuration data specific for the
+// DNS check type. This is passed along with CheckConfiguration to the
+// CreateCheck and ModifyCheck functions to manage checks.
 type CheckConfigurationDNS struct {
 	_ struct{}
 
@@ -519,7 +545,9 @@ type CheckConfigurationDNS struct {
 	ExpectedIP string `url:"expectedip,omitempty"`
 }
 
-// CheckConfigurationUDP - Configuration for the UDP check type.
+// CheckConfigurationUDP contains check configuration data specific for the
+// UDP check type. This is passed along with CheckConfiguration to the
+// CreateCheck and ModifyCheck functions to manage checks.
 type CheckConfigurationUDP struct {
 	_ struct{}
 
@@ -533,7 +561,9 @@ type CheckConfigurationUDP struct {
 	StringToExpect string `url:"stringtoexpect,omitempty"`
 }
 
-// CheckConfigurationSMTP - Configuration for the SMTP check type.
+// CheckConfigurationSMTP contains check configuration data specific for the
+// SMTP check type. This is passed along with CheckConfiguration to the
+// CreateCheck and ModifyCheck functions to manage checks.
 type CheckConfigurationSMTP struct {
 	_ struct{}
 
@@ -551,7 +581,9 @@ type CheckConfigurationSMTP struct {
 	StringToExpect string `url:"stringtoexpect,omitempty"`
 }
 
-// CheckConfigurationPOP3 - Configuration for the POP3 check type.
+// CheckConfigurationPOP3 contains check configuration data specific for the
+// POP3 check type. This is passed along with CheckConfiguration to the
+// CreateCheck and ModifyCheck functions to manage checks.
 type CheckConfigurationPOP3 struct {
 	_ struct{}
 
@@ -565,7 +597,9 @@ type CheckConfigurationPOP3 struct {
 	StringToExpect string `url:"stringtoexpect,omitempty"`
 }
 
-// CheckConfigurationIMAP - Configuration for the IMAP check type.
+// CheckConfigurationIMAP contains check configuration data specific for the
+// IMAP check type. This is passed along with CheckConfiguration to the
+// CreateCheck and ModifyCheck functions to manage checks.
 type CheckConfigurationIMAP struct {
 	_ struct{}
 
@@ -579,8 +613,7 @@ type CheckConfigurationIMAP struct {
 	StringToExpect string `url:"stringtoexpect,omitempty"`
 }
 
-// CreateCheckInput - Input for the CreateCheck function.
-// Embeds checkConfiguration structs.
+// CreateCheckInput is the input for the CreateCheck function.
 type CreateCheckInput struct {
 	_ struct{}
 
@@ -596,7 +629,7 @@ type CreateCheckInput struct {
 	CheckConfigurationIMAP
 }
 
-// CreateCheckOutput - Output for the CreateCheck function.
+// CreateCheckOutput is the output for the CreateCheck function.
 type CreateCheckOutput struct {
 	_ struct{}
 
@@ -621,8 +654,7 @@ func (c *Check) CreateCheck(in CreateCheckInput) (out CreateCheckOutput, err err
 	return
 }
 
-// ModifyCheckInput - Input for the ModifyCheck function.
-// Embeds checkConfiguration structs.
+// ModifyCheckInput is the input for the ModifyCheck function.
 type ModifyCheckInput struct {
 	_ struct{}
 
@@ -641,7 +673,7 @@ type ModifyCheckInput struct {
 	CheckConfigurationIMAP
 }
 
-// ModifyCheckOutput - Output for the ModifyCheck function.
+// ModifyCheckOutput is the output for the ModifyCheck function.
 type ModifyCheckOutput struct {
 	_ struct{}
 
@@ -659,7 +691,7 @@ func (c *Check) ModifyCheck(in ModifyCheckInput) (out ModifyCheckOutput, err err
 	return
 }
 
-// DeleteCheckInput - Input to send to the DeleteCheck method.
+// DeleteCheckInput is the input to send to the DeleteCheck method.
 type DeleteCheckInput struct {
 	_ struct{}
 
@@ -667,7 +699,7 @@ type DeleteCheckInput struct {
 	CheckID int
 }
 
-// DeleteCheckOutput - Output for the DeleteCheck method.
+// DeleteCheckOutput is the output for the DeleteCheck method.
 type DeleteCheckOutput struct {
 	_ struct{}
 
