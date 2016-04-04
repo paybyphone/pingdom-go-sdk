@@ -11,14 +11,16 @@ The Pingdom API reference can be found [here][2].
 
 ## Installing
 
-If you are using Go 1.5, you can set the `GO15VENDOREXPERIMENT=1`
-vendoring flag to install the SDK simply with:
+If you are using Go 1.6 or higher, use the following to install the SDK.
+Dependencies will be contained within the `vendor` directory, so no further
+action is necessary.
 
 ```
 go get -u github.com/paybyphone/pingdom-go-sdk
 ```
 
-If you are using Go 1.6, this is not required - vendoring is enabled by default.
+If you are using Go 1.5, you will need to set the `GO15VENDOREXPERIMENT=1`
+vendoring flag to ensure vendored dependencies are used.
 
 If you are using a version of Go below 1.5, you will need to tell go to get the
 SDK and all of its dependencies.
