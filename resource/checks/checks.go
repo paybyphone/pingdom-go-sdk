@@ -319,7 +319,7 @@ type DetailedCheckEntry struct {
 	Type DetailedCheckEntryTypes
 
 	// A list of contact IDs that receive alerts.
-	ContactIds []int
+	ContactIDs []int
 
 	// Send alerts as email.
 	SendToEmail bool

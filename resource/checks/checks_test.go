@@ -230,7 +230,7 @@ func getDetailedCheckOutputData() GetDetailedCheckOutput {
 					},
 				},
 			},
-			ContactIds:               []int{1234, 5678},
+			ContactIDs:               []int{1234, 5678},
 			SendToEmail:              false,
 			SendToSMS:                false,
 			SendToTwitter:            false,
