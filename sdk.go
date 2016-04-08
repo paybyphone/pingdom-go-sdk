@@ -25,3 +25,6 @@
 // For SDK usage, see the GoDoc at
 // https://godoc.org/github.com/paybyphone/pingdom-go-sdk.
 package sdk
+
+// Version exports the SDK release version.
+const Version = "0.1.0"
