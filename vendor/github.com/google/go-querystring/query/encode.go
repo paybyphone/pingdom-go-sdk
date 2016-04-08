@@ -88,8 +88,11 @@ type Encoder interface {
 // same name.  Including the "comma" option signals that the field should be
 // encoded as a single comma-delimited value.  Including the "space" option
 // similarly encodes the value as a single space-delimited string. Including
-// the "brackets" option signals that the multiple URL values should have "[]"
-// appended to the value name.
+// the "semicolon" option will encode the value as a semicolon-delimited string.
+// Including the "brackets" option signals that the multiple URL values should
+// have "[]" appended to the value name. "numbered" will append a number to
+// the end of each incidence of the value name, example:
+// name0=value0&name1=value1, etc.
 //
 // Anonymous struct fields are usually encoded as if their inner exported
 // fields were fields in the outer struct, subject to the standard Go
