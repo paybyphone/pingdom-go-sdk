@@ -150,7 +150,7 @@ func httpGetContactListTestServer() *httptest.Server {
 	})
 }
 
-func ContactConfigurationData() ContactConfiguration {
+func contactConfigurationData() ContactConfiguration {
 	return ContactConfiguration{
 		Name:               "John Doe",
 		Email:              "john@johnsdomain.com",
@@ -165,11 +165,11 @@ func ContactConfigurationData() ContactConfiguration {
 
 func createContactInputData() CreateContactInput {
 	return CreateContactInput{
-		ContactConfiguration: ContactConfigurationData(),
+		ContactConfiguration: contactConfigurationData(),
 	}
 }
 
-const ContactConfigurationText = "cellphone=5555555&countrycode=46&countryiso=SE&defaultsmsprovider=clickatell&directtwitter=true&email=john%40johnsdomain.com&name=John+Doe&twitteruser=jdoe"
+const contactConfigurationText = "cellphone=5555555&countrycode=46&countryiso=SE&defaultsmsprovider=clickatell&directtwitter=true&email=john%40johnsdomain.com&name=John+Doe&twitteruser=jdoe"
 
 func createContactOutputData() CreateContactOutput {
 	return CreateContactOutput{
@@ -198,7 +198,7 @@ func httpCreateContactTestServer() *httptest.Server {
 
 func modifyContactInputData() ModifyContactInput {
 	return ModifyContactInput{
-		ContactConfiguration: ContactConfigurationData(),
+		ContactConfiguration: contactConfigurationData(),
 	}
 }
 
@@ -335,7 +335,7 @@ func TestContactConfigurationQueryText(t *testing.T) {
 	in := createContactInputData()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := ContactConfigurationText
+	expected := contactConfigurationText
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)

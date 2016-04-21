@@ -287,7 +287,7 @@ func httpGetDetailedCheckTestServer() *httptest.Server {
 	})
 }
 
-func CheckConfigurationData() CheckConfiguration {
+func checkConfigurationData() CheckConfiguration {
 	return CheckConfiguration{
 		Name:                     "My check",
 		Host:                     "example.com",
@@ -307,7 +307,7 @@ func CheckConfigurationData() CheckConfiguration {
 	}
 }
 
-func CheckConfigurationHTTPData() CheckConfigurationHTTP {
+func checkConfigurationHTTPData() CheckConfigurationHTTP {
 	return CheckConfigurationHTTP{
 		URL:              "/test",
 		Encryption:       true,
@@ -322,16 +322,16 @@ func CheckConfigurationHTTPData() CheckConfigurationHTTP {
 
 func createCheckInputHTTPData() CreateCheckInput {
 	c := CreateCheckInput{
-		CheckConfiguration:     CheckConfigurationData(),
-		CheckConfigurationHTTP: CheckConfigurationHTTPData(),
+		CheckConfiguration:     checkConfigurationData(),
+		CheckConfigurationHTTP: checkConfigurationHTTPData(),
 	}
 	c.Type = "http"
 	return c
 }
 
-const CheckConfigurationHTTPText = "auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=443&postdata=baz&requestheader0=X-Header1%3Afoo&requestheader1=X-Header2%3Abar&requestheader2=X-Header3%3Abaz&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&shouldcontain=foo&shouldnotcontain=bar&tags=foo%2Cbar&type=http&url=%2Ftest"
+const checkConfigurationHTTPText = "auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=443&postdata=baz&requestheader0=X-Header1%3Afoo&requestheader1=X-Header2%3Abar&requestheader2=X-Header3%3Abaz&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&shouldcontain=foo&shouldnotcontain=bar&tags=foo%2Cbar&type=http&url=%2Ftest"
 
-func CheckConfigurationHTTPCustomData() CheckConfigurationHTTPCustom {
+func checkConfigurationHTTPCustomData() CheckConfigurationHTTPCustom {
 	return CheckConfigurationHTTPCustom{
 		URL:            "/test",
 		Encryption:     true,
@@ -343,16 +343,16 @@ func CheckConfigurationHTTPCustomData() CheckConfigurationHTTPCustom {
 
 func createCheckInputHTTPCustomData() CreateCheckInput {
 	c := CreateCheckInput{
-		CheckConfiguration:           CheckConfigurationData(),
-		CheckConfigurationHTTPCustom: CheckConfigurationHTTPCustomData(),
+		CheckConfiguration:           checkConfigurationData(),
+		CheckConfigurationHTTPCustom: checkConfigurationHTTPCustomData(),
 	}
 	c.Type = "httpcustom"
 	return c
 }
 
-const CheckConfigurationHTTPCustomText = "additionalurls=www.mysite.com%3Bwww.myothersite.com&auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=443&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=httpcustom&url=%2Ftest"
+const checkConfigurationHTTPCustomText = "additionalurls=www.mysite.com%3Bwww.myothersite.com&auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=443&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=httpcustom&url=%2Ftest"
 
-func CheckConfigurationTCPData() CheckConfigurationTCP {
+func checkConfigurationTCPData() CheckConfigurationTCP {
 	return CheckConfigurationTCP{
 		Port:           22,
 		StringToSend:   "foo",
@@ -362,31 +362,31 @@ func CheckConfigurationTCPData() CheckConfigurationTCP {
 
 func createCheckInputTCPData() CreateCheckInput {
 	c := CreateCheckInput{
-		CheckConfiguration:    CheckConfigurationData(),
-		CheckConfigurationTCP: CheckConfigurationTCPData(),
+		CheckConfiguration:    checkConfigurationData(),
+		CheckConfigurationTCP: checkConfigurationTCPData(),
 	}
 	c.Type = "tcp"
 	return c
 }
 
-const CheckConfigurationTCPText = "contactids=1234%2C5678&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=22&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=bar&stringtosend=foo&tags=foo%2Cbar&type=tcp"
+const checkConfigurationTCPText = "contactids=1234%2C5678&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=22&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=bar&stringtosend=foo&tags=foo%2Cbar&type=tcp"
 
-func CheckConfigurationPingData() CheckConfigurationPing {
+func checkConfigurationPingData() CheckConfigurationPing {
 	return CheckConfigurationPing{}
 }
 
 func createCheckInputPingData() CreateCheckInput {
 	c := CreateCheckInput{
-		CheckConfiguration:     CheckConfigurationData(),
-		CheckConfigurationPing: CheckConfigurationPingData(),
+		CheckConfiguration:     checkConfigurationData(),
+		CheckConfigurationPing: checkConfigurationPingData(),
 	}
 	c.Type = "ping"
 	return c
 }
 
-const CheckConfigurationPingText = "contactids=1234%2C5678&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=ping"
+const checkConfigurationPingText = "contactids=1234%2C5678&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=ping"
 
-func CheckConfigurationDNSData() CheckConfigurationDNS {
+func checkConfigurationDNSData() CheckConfigurationDNS {
 	return CheckConfigurationDNS{
 		NameServer: "ns1.example.com",
 		ExpectedIP: "127.0.0.1",
@@ -395,16 +395,16 @@ func CheckConfigurationDNSData() CheckConfigurationDNS {
 
 func createCheckInputDNSData() CreateCheckInput {
 	c := CreateCheckInput{
-		CheckConfiguration:    CheckConfigurationData(),
-		CheckConfigurationDNS: CheckConfigurationDNSData(),
+		CheckConfiguration:    checkConfigurationData(),
+		CheckConfigurationDNS: checkConfigurationDNSData(),
 	}
 	c.Type = "dns"
 	return c
 }
 
-const CheckConfigurationDNSText = "contactids=1234%2C5678&expectedip=127.0.0.1&host=example.com&name=My+check&nameserver=ns1.example.com&notifyagainevery=1&notifywhenbackup=true&paused=true&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=dns"
+const checkConfigurationDNSText = "contactids=1234%2C5678&expectedip=127.0.0.1&host=example.com&name=My+check&nameserver=ns1.example.com&notifyagainevery=1&notifywhenbackup=true&paused=true&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&tags=foo%2Cbar&type=dns"
 
-func CheckConfigurationUDPData() CheckConfigurationUDP {
+func checkConfigurationUDPData() CheckConfigurationUDP {
 	return CheckConfigurationUDP{
 		Port:           53,
 		StringToSend:   "foo",
@@ -414,16 +414,16 @@ func CheckConfigurationUDPData() CheckConfigurationUDP {
 
 func createCheckInputUDPData() CreateCheckInput {
 	c := CreateCheckInput{
-		CheckConfiguration:    CheckConfigurationData(),
-		CheckConfigurationUDP: CheckConfigurationUDPData(),
+		CheckConfiguration:    checkConfigurationData(),
+		CheckConfigurationUDP: checkConfigurationUDPData(),
 	}
 	c.Type = "udp"
 	return c
 }
 
-const CheckConfigurationUDPText = "contactids=1234%2C5678&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=53&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=bar&stringtosend=foo&tags=foo%2Cbar&type=udp"
+const checkConfigurationUDPText = "contactids=1234%2C5678&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=53&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=bar&stringtosend=foo&tags=foo%2Cbar&type=udp"
 
-func CheckConfigurationSMTPData() CheckConfigurationSMTP {
+func checkConfigurationSMTPData() CheckConfigurationSMTP {
 	return CheckConfigurationSMTP{
 		Port:           587,
 		Auth:           "foo:bar",
@@ -434,16 +434,16 @@ func CheckConfigurationSMTPData() CheckConfigurationSMTP {
 
 func createCheckInputSMTPData() CreateCheckInput {
 	c := CreateCheckInput{
-		CheckConfiguration:     CheckConfigurationData(),
-		CheckConfigurationSMTP: CheckConfigurationSMTPData(),
+		CheckConfiguration:     checkConfigurationData(),
+		CheckConfigurationSMTP: checkConfigurationSMTPData(),
 	}
 	c.Type = "smtp"
 	return c
 }
 
-const CheckConfigurationSMTPText = "auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=587&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=foobar&tags=foo%2Cbar&type=smtp"
+const checkConfigurationSMTPText = "auth=foo%3Abar&contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=587&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=foobar&tags=foo%2Cbar&type=smtp"
 
-func CheckConfigurationPOP3Data() CheckConfigurationPOP3 {
+func checkConfigurationPOP3Data() CheckConfigurationPOP3 {
 	return CheckConfigurationPOP3{
 		Port:           993,
 		Encryption:     true,
@@ -453,16 +453,16 @@ func CheckConfigurationPOP3Data() CheckConfigurationPOP3 {
 
 func createCheckInputPOP3Data() CreateCheckInput {
 	c := CreateCheckInput{
-		CheckConfiguration:     CheckConfigurationData(),
-		CheckConfigurationPOP3: CheckConfigurationPOP3Data(),
+		CheckConfiguration:     checkConfigurationData(),
+		CheckConfigurationPOP3: checkConfigurationPOP3Data(),
 	}
 	c.Type = "pop3"
 	return c
 }
 
-const CheckConfigurationPOP3Text = "contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=993&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=foobar&tags=foo%2Cbar&type=pop3"
+const checkConfigurationPOP3Text = "contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=993&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=foobar&tags=foo%2Cbar&type=pop3"
 
-func CheckConfigurationIMAPData() CheckConfigurationIMAP {
+func checkConfigurationIMAPData() CheckConfigurationIMAP {
 	return CheckConfigurationIMAP{
 		Port:           995,
 		Encryption:     true,
@@ -472,14 +472,14 @@ func CheckConfigurationIMAPData() CheckConfigurationIMAP {
 
 func createCheckInputIMAPData() CreateCheckInput {
 	c := CreateCheckInput{
-		CheckConfiguration:     CheckConfigurationData(),
-		CheckConfigurationIMAP: CheckConfigurationIMAPData(),
+		CheckConfiguration:     checkConfigurationData(),
+		CheckConfigurationIMAP: checkConfigurationIMAPData(),
 	}
 	c.Type = "imap"
 	return c
 }
 
-const CheckConfigurationIMAPText = "contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=995&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=foobar&tags=foo%2Cbar&type=imap"
+const checkConfigurationIMAPText = "contactids=1234%2C5678&encryption=true&host=example.com&name=My+check&notifyagainevery=1&notifywhenbackup=true&paused=true&port=995&resolution=1&sendnotificationwhendown=2&sendtoandroid=true&sendtoemail=true&sendtoiphone=true&sendtosms=true&sendtotwitter=true&stringtoexpect=foobar&tags=foo%2Cbar&type=imap"
 
 func createCheckOutputData() CreateCheckOutput {
 	return CreateCheckOutput{
@@ -508,72 +508,72 @@ func httpCreateCheckTestServer() *httptest.Server {
 
 func modifyCheckInputHTTPData() ModifyCheckInput {
 	c := ModifyCheckInput{
-		CheckConfiguration:     CheckConfigurationData(),
-		CheckConfigurationHTTP: CheckConfigurationHTTPData(),
+		CheckConfiguration:     checkConfigurationData(),
+		CheckConfigurationHTTP: checkConfigurationHTTPData(),
 	}
 	return c
 }
 
 func modifyCheckInputHTTPCustomData() ModifyCheckInput {
 	c := ModifyCheckInput{
-		CheckConfiguration:           CheckConfigurationData(),
-		CheckConfigurationHTTPCustom: CheckConfigurationHTTPCustomData(),
+		CheckConfiguration:           checkConfigurationData(),
+		CheckConfigurationHTTPCustom: checkConfigurationHTTPCustomData(),
 	}
 	return c
 }
 
 func modifyCheckInputTCPData() ModifyCheckInput {
 	c := ModifyCheckInput{
-		CheckConfiguration:    CheckConfigurationData(),
-		CheckConfigurationTCP: CheckConfigurationTCPData(),
+		CheckConfiguration:    checkConfigurationData(),
+		CheckConfigurationTCP: checkConfigurationTCPData(),
 	}
 	return c
 }
 
 func modifyCheckInputPingData() ModifyCheckInput {
 	c := ModifyCheckInput{
-		CheckConfiguration:     CheckConfigurationData(),
-		CheckConfigurationPing: CheckConfigurationPingData(),
+		CheckConfiguration:     checkConfigurationData(),
+		CheckConfigurationPing: checkConfigurationPingData(),
 	}
 	return c
 }
 
 func modifyCheckInputDNSData() ModifyCheckInput {
 	c := ModifyCheckInput{
-		CheckConfiguration:    CheckConfigurationData(),
-		CheckConfigurationDNS: CheckConfigurationDNSData(),
+		CheckConfiguration:    checkConfigurationData(),
+		CheckConfigurationDNS: checkConfigurationDNSData(),
 	}
 	return c
 }
 
 func modifyCheckInputUDPData() ModifyCheckInput {
 	c := ModifyCheckInput{
-		CheckConfiguration:    CheckConfigurationData(),
-		CheckConfigurationUDP: CheckConfigurationUDPData(),
+		CheckConfiguration:    checkConfigurationData(),
+		CheckConfigurationUDP: checkConfigurationUDPData(),
 	}
 	return c
 }
 
 func modifyCheckInputSMTPData() ModifyCheckInput {
 	c := ModifyCheckInput{
-		CheckConfiguration:     CheckConfigurationData(),
-		CheckConfigurationSMTP: CheckConfigurationSMTPData(),
+		CheckConfiguration:     checkConfigurationData(),
+		CheckConfigurationSMTP: checkConfigurationSMTPData(),
 	}
 	return c
 }
 
 func modifyCheckInputPOP3Data() ModifyCheckInput {
 	c := ModifyCheckInput{
-		CheckConfiguration:     CheckConfigurationData(),
-		CheckConfigurationPOP3: CheckConfigurationPOP3Data(),
+		CheckConfiguration:     checkConfigurationData(),
+		CheckConfigurationPOP3: checkConfigurationPOP3Data(),
 	}
 	return c
 }
 
 func modifyCheckInputIMAPData() ModifyCheckInput {
 	c := ModifyCheckInput{
-		CheckConfiguration:     CheckConfigurationData(),
-		CheckConfigurationIMAP: CheckConfigurationIMAPData(),
+		CheckConfiguration:     checkConfigurationData(),
+		CheckConfigurationIMAP: checkConfigurationIMAPData(),
 	}
 	return c
 }
@@ -812,7 +812,7 @@ func TestCheckConfigurationHTTPQueryText(t *testing.T) {
 	in := createCheckInputHTTPData()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := CheckConfigurationHTTPText
+	expected := checkConfigurationHTTPText
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)
@@ -823,7 +823,7 @@ func TestCheckConfigurationHTTPCustomQueryText(t *testing.T) {
 	in := createCheckInputHTTPCustomData()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := CheckConfigurationHTTPCustomText
+	expected := checkConfigurationHTTPCustomText
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)
@@ -834,7 +834,7 @@ func TestCheckConfigurationTCPQueryText(t *testing.T) {
 	in := createCheckInputTCPData()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := CheckConfigurationTCPText
+	expected := checkConfigurationTCPText
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)
@@ -845,7 +845,7 @@ func TestCheckConfigurationPingQueryText(t *testing.T) {
 	in := createCheckInputPingData()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := CheckConfigurationPingText
+	expected := checkConfigurationPingText
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)
@@ -856,7 +856,7 @@ func TestCheckConfigurationDNSQueryText(t *testing.T) {
 	in := createCheckInputDNSData()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := CheckConfigurationDNSText
+	expected := checkConfigurationDNSText
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)
@@ -867,7 +867,7 @@ func TestCheckConfigurationUDPQueryText(t *testing.T) {
 	in := createCheckInputUDPData()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := CheckConfigurationUDPText
+	expected := checkConfigurationUDPText
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)
@@ -878,7 +878,7 @@ func TestCheckConfigurationSMTPQueryText(t *testing.T) {
 	in := createCheckInputSMTPData()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := CheckConfigurationSMTPText
+	expected := checkConfigurationSMTPText
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)
@@ -889,7 +889,7 @@ func TestCheckConfigurationPOP3QueryText(t *testing.T) {
 	in := createCheckInputPOP3Data()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := CheckConfigurationPOP3Text
+	expected := checkConfigurationPOP3Text
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)
@@ -900,7 +900,7 @@ func TestCheckConfigurationIMAPQueryText(t *testing.T) {
 	in := createCheckInputIMAPData()
 	v, _ := query.Values(in)
 	out := v.Encode()
-	expected := CheckConfigurationIMAPText
+	expected := checkConfigurationIMAPText
 
 	if out != expected {
 		t.Fatalf("Expected %s, got %s", expected, out)
